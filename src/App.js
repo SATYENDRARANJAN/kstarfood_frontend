@@ -85,7 +85,6 @@ closeCartM=()=>{
 logout =()=>{
   localStorage.clear()
   this.setState({jwt:''})
-
 }
 
 closeM=()=>{
@@ -182,5 +181,4 @@ flex-direction:column;
 width:100%;
 height:100%;
 `
-
 const ModalTitle=styled.text``
