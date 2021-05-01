@@ -31,15 +31,23 @@ class Modal extends React.Component{
 }
 
 const Root = styled.div`
-    // display:flex;
+    display:flex;
     flex-direction:column;
     position:fixed;
     height: 100%;
-    width:100%;
+    width:auto;
     justify-items:center;
-    background-color: #4e4e4e;
-    opacity:0.9;
-    z-index:999
+    // background-color: #ffe6cc;
+    background-color: linear-gradient(to bottom,#7b5734  0%, #ffe6cc 100%); 
+    background: -webkit-gradient(to bottom,#7b5734  0%, #ffe6cc 100%);  /* Chrome, Safari4+ */
+background: -webkit-linear-gradient(to bottom,#7b5734  0%, #ffe6cc 100%);  /* Chrome10+, Safari5.1+ */
+background: -moz-linear-gradient(to bottom,#7b5734  0%, #ffe6cc 100%);     /* FF3.6+ */
+background: linear-gradient(to bottom,#7b5734  0%, #ffe6cc 100%);      /* W3C */
+    // opacity:0.9;
+    // background-color: rgb(255, 230, 204,0.9);//rgb(160, 87, 52,0.9);
+    z-index:999;
+    left:0;
+    right:0;
 `
 
 const Close=  styled.button`   

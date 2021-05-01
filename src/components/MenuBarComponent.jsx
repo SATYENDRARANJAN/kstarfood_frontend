@@ -32,7 +32,6 @@ class MenuBarComponent extends React.Component{
         console.log(this.state.tags)
     }
 
-
     menuClick=(tag,setSelectedTag)=>{
         setSelectedTag(tag)
         localStorage.setItem('tag',tag)
@@ -78,23 +77,45 @@ const Root = styled.div`
 const MenuBar =styled.div`
     display: flex;
     flex-wrap: wrap;
-    height: 30px;
-    border: #eeeeee;
     margin-bottom: 20px;
+    
 `
 
 const MenuItems =styled.button`
-    margin: 0px 10px 0px 10px;
+    -webkit-appearance: button;
+    -webkit-writing-mode: horizontal-tb !important;
+    letter-spacing: 1.5;
+    word-spacing: normal;
+    text-shadow: none;
+    text-align: center;
+    color:#7b5734;
+    background-color: #ffe6cc;
+    box-sizing: border-box;
+    height :30px;
+    padding: 5px 17px 4px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius:15px;
+    border-color: #7b5734;
     width: auto;
     height : 100%;
     text-align: center;
-    border: #eeeeee
 
-    &:focus{
-        &:focus {
-            color: #244234;
-      }
+    &:focus {
+        background-color: #7b5734;
+        color: #ffe6cc;
+        outline:0;
     }
+    &:selected {
+        background-color: #7b5734;
+        color: #ffe6cc;
+        outline:0;
+    }
+    &:not( first-child ) {
+        // CSS property
+        margin: 0px 10px 6px 0px;
+
+      } 
 
 ` 
 

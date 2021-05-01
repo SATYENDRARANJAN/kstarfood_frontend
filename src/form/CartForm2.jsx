@@ -65,19 +65,19 @@ class CartForm2 extends React.Component{
         }
         await  this.setState({product_qty:{...this.state.product_qty,[`${item.product.product_id}`]: (parseInt(this.state.product_qty[`${item.product.product_id}`])-1)}})
     }
-
-    printRows=(item)=>{
+    printRows=(item,isMobile)=>{
         return(
                 <Row>
-                <ItemDiv style={{'width':'25%','background-color':'red','padding':'4px'}}>
-                        <ItemPic src={placeholder}></ItemPic>
+                <ItemDiv style={{'width':'25%','padding':'4px'}}>
+                        <ItemPic src={item.product.img}></ItemPic>
                 </ItemDiv>
-                <ItemDiv style={{'width':'50%','background-color':'yellow'}}>
-                    <ItemName>{item.product.product_name}</ItemName>
-                    <ItemPrice>Price per piece:{item.product.price}</ItemPrice>
-                    <ItemPrice> Total Price:{item.product.price * parseInt(this.state.product_qty[`${item.product.product_id}`])}</ItemPrice>
+                <ItemDiv style={{'width':'50%'}}>
+                    <ItemName isMobile={isMobile}>{item.product.product_name}</ItemName>
+                    <br/>
+                    <ItemPrice isMobile={isMobile}>Price per piece:{item.product.price}</ItemPrice>
+                    <ItemPrice isMobile={isMobile}> Total Price:{item.product.price * parseInt(this.state.product_qty[`${item.product.product_id}`])}</ItemPrice>
                 </ItemDiv>
-                <ItemDiv style={{'width':'25%','background-color':'pink'}}>
+                <ItemDiv style={{'width':'25%','backgroundColor':'rgb(77,53,29,0.4)','padding':'3px','border-radius':'5px'}}>
                         <Increment  onClick={()=>this.onIncrementItem(item)}>+</Increment>
                         <ItemQuantity>{this.state.product_qty[`${item.product.product_id}`] }</ItemQuantity>
                         <Decrement  onClick={()=>this.onDecrementItem(item)}>-</Decrement>
@@ -107,7 +107,7 @@ class CartForm2 extends React.Component{
     
     getPayableAmount=()=>{
 
-        return this.getTotal() + this.getTax() + " INR"
+        return '₹ '+ (this.getTotal() + this.getTax()) 
     }
 
     removeItem=()=>{
@@ -136,6 +136,12 @@ class CartForm2 extends React.Component{
         openAddress(this.state.order_id);
     }
 
+    getCart2Items =(isMobile)=>{
+        let div=[]
+        this.state.cartlist && this.state.cartlist.map((item)=>{div.push(this.printRows(item,isMobile))})
+        return div
+    }
+
     render(){
         const {item}=this.state
         let div=[]
@@ -143,29 +149,26 @@ class CartForm2 extends React.Component{
         this.state.cartlist && this.state.cartlist.map((item)=>{div.push(this.printRows(item))})
         return(
             <MyContext.Consumer>
-            {({closeCart2M,openAddress})=>(
+            {({closeCart2M,openAddress,isMobile})=>(
                 <Root>
                         <CartWrapper>
-                           {/* {this.state.cartlist && this.state.cartlist.map((item)=>{this.printRows(item)})} */}
-                            {div}
+                            <Title>Your Cart </Title>
+                            {this.getCart2Items(isMobile)}
                             <Line/>
-                            <LastRow style={{'display':'flex','flex-direction':'column'}}>
-                                <LastRow>
-                                <TotalPriceTitle>Total : {this.getTotal()} </TotalPriceTitle>
-                                {/* <TotalPrice></TotalPrice> */}
-                                </LastRow>
-                                <LastRow>
-                                <TotalPriceTitle>Tax : {this.getTax()}</TotalPriceTitle>
-                                {/* <TotalPrice>{this.getTax()}</TotalPrice> */}
-                                </LastRow>
-                                {/* <LastRow>
-                                <TotalPriceTitle>Discount: </TotalPriceTitle>
-                                <TotalPrice>{this.getDiscount()}</TotalPrice>
-                                </LastRow> */}
-                                <LastRow >
-                                <TotalPriceTitle>Payable Amount : {this.getPayableAmount()}</TotalPriceTitle>
-                                {/* <TotalPrice>{this.getPayableAmount()}</TotalPrice> */}
-                                </LastRow>
+                            <LastRow isMobile={isMobile} style={{'display':'flex','flexDirection':'column'}}>
+                                <TotalPriceTitle>
+                                    <text style={{'font-size':'14px' ,'letter-spacing':'1.2px'}}>Total</text> 
+                                    <text style={{'font-size':'14px' ,'letter-spacing':'1.2px'}}>{this.getTotal()}</text> 
+                                </TotalPriceTitle>
+                                <TotalPriceTitle>
+                                    <div style={{'font-size':'14px' ,'letter-spacing':'1.2px'}}>Tax</div> 
+                                    <div style={{'font-size':'14px' ,'letter-spacing':'1.2px'}}>{this.getTax()}</div>     
+                                </TotalPriceTitle>
+                                <br/>
+                                <TotalPriceTitle>
+                                    <div style={{'font-size':'18px' ,'letter-spacing':'1.2px'}}>Payable Amount</div> 
+                                    <div style={{'font-size':'18px' ,'letter-spacing':'1.1px'}}>{this.getPayableAmount()}</div> 
+                                </TotalPriceTitle>
                                 <BuyNow onClick={()=>this.buyNow(closeCart2M,openAddress)}>Buy Now</BuyNow>
                             </LastRow>
                         </CartWrapper>
@@ -181,18 +184,29 @@ class CartForm2 extends React.Component{
 const Root =styled.div`
     display:flex;
     flex-direction:column;
-    // width:100%;
+    width:100%;
     height:100vh;
-    background-color:#4e4e4e;
+    max-width:500px;
+    align-self:center;
+    // background-color:#4e4e4e;
+    overflow-y:scroll;
+    margin-bottom:170px;
+    background-color: rgb(77, 53, 29,0.2);
+   
 `
 
 const CartWrapper=styled.div`
+    // width:100%;
+    height:auto;
+    margin:40px;
+    // background-color:#4e4e4e;
+
     display:flex;
     flex-direction:column;
     // width:100%;
     height:auto;
     margin:40px;
-    background-color:#4e4e4e;
+    // background-color:#4e4e4e;
 
 `
 
@@ -201,6 +215,10 @@ const Row= styled.div`
     flex-direction:row;
     height:100px;
     margin-bottom:5px;
+    border:2px solid #7b5734;
+    background-color:#ffe6cc;
+    border-radius:5px;
+    padding:5px;
 `
 
 const ItemPic=styled.img`
@@ -215,11 +233,13 @@ const ItemDiv=styled.div`
 
 
 const ItemName = styled.text`
-    font-size:16px;
+    font-size:${props=>props.isMobile?'12px':'16px'};
+    text-align:center;
 `
 const ItemPrice = styled.text`
-    font-size:18px;
-    bold:true;
+    text-decoration:bold;
+    font-size:${props=>props.isMobile?'14px':'16px'};
+
 `
 
 const ImageDiv=styled.div`
@@ -231,45 +251,72 @@ const ImageDiv=styled.div`
 const ItemQuantity = styled.text`
 
 `
+
 const Increment=styled.button``
 const Decrement=styled.button`
 `
 const Remove=styled.button`
-display:flex;
-
+    display:flex;
     margin-top:10px;
 `
 const Line =styled.div`
-display:flex;
+    display:flex;
     height:1px;
     margin:30px;
     background-color:#ffffff;
 `
 
+
 const LastRow = styled.div`
-    // display:flex;
+    display:flex;
     // width: 100%;
     // height: 60px;
-    background-color:#f4f4f4;
+    background-color:#ffe6cc;
+    width:300px;
     // align-items:center;
     padding:12px;
+    position:fixed;
+    bottom:16px;
+    padding:10px 30px;
+    border:2px solid #7b5734;
+    border-radius:5px;
+    max-width:${props=>props.is_mobile?'100%':'500px'};
+    align-self:center;
+    // justify:content:center;
 `
 const TotalPriceTitle = styled.text`
-display:flex;
-
+    display:flex;
     font-size:18px;
-    bold:true;
+    text-decoration:bold;
+    justify-content:space-between;
+    
     
 `
 
-const TotalPrice= styled.text`
+const Title= styled.text`
     display:flex;
     font-size:18px;
-    bold:true;
+    text-decoration:bold;
+    align-self:center;
+    color:#ffe6cc;
+    border: 2px #ffe6cc solid ;
+    padding: 4px 15px ;
+    border-radius:5px;
+    margin-bottom:6px;
 `
 
+
+
 const BuyNow= styled.button`
-    // display:flex;   
-    padding:10px 
+    width:200px;
+    padding:10px;
+    background-color:#7b5734;
+    border-radius:5px;
+    border:0px ;
+    font-size:16px;
+    font-weight:bold;
+    color:#ffe6cc;
+    align-self: center;
+    margin-top:10px;
 `
 export default CartForm2

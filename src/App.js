@@ -20,6 +20,7 @@ import CartForm from './form/CartForm'
 import CartForm2 from './form/CartForm2'
 import AddressForm from './form/AddressForm'
 import {MyProvider,MyConsumer} from './globalStore/MyProvider.jsx'
+import AddedToCartPopup  from './components/AddedToCartPopup.jsx'
 import React from 'react';
 class App extends React.Component{
   static whyDidYouRender = true
@@ -27,6 +28,10 @@ class App extends React.Component{
   constructor(props){
     super(props)
     this.state={
+      mobile :'',
+      width: window.innerWidth,
+      isMobile: window.innerWidth <= 500,
+
       loginopen:false,
       openM:this.openM,
       closeM:this.closeM,
@@ -43,13 +48,32 @@ class App extends React.Component{
       openAddress:this.openAddress,
       closeAddress:this.closeAddress,
       order_id:'',
-      selectedtag:'all',
+      selectedtag: localStorage.getItem('tag') ,
       setSelectedTag:this.setSelectedTag,
       tags:[],
       setTags:this.setTags,
       itemlist:[],
-      logout:this.logout
+      logout:this.logout,
+      showAddedToCart:false,
+      openAddedToCartPopUp:this.openAddedToCartPopUp,
+      addedToCart:false,
+      setAddedToCart:this.setAddedToCart,
     }
+    const isMobile = window.innerWidth <= 500;
+    console.log("isMobile",isMobile)
+  }
+
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth });
+    if (window.innerWidth <500 ){
+      this.setState({isMobile:true})
+    }else{
+      this.setState({isMobile:false})
+    }
+  };
+
+  componentDidMount(){
+    window.addEventListener('resize', this.handleWindowSizeChange);
   }
 
   is_logged_in=()=>{
@@ -70,8 +94,17 @@ openCart2M=()=>{
   this.setState({cart2open:true})
 }
 
+openAddedToCartPopUp=()=>{
+  this.setState({showAddedToCart:true})
+}
+
 closeCart2M=()=>{
   this.setState({cart2open:false})
+}
+
+setAddedToCart=()=>{
+  this.setState({addedToCart:true})
+  setTimeout(()=>{this.setState({addedToCart:false})},2000)
 }
 
 openCartM=()=>{
@@ -110,12 +143,6 @@ setSelectedTag=async(tag_name)=>{
         then((response)=> 
             {
                 console.log(response)
-                // response && this.setState({itemlist:response.data.products},()=>{
-                    // console.log(this.state.itemlist)
-                    // {this.state.itemlist &&  this.state.itemlist.map((item) =>{div.push(this.getItemView(item))})}
-                    // return div
-                // })
-                // response && response.data.products.map((item) =>{div.push(this.getItemView(item))})
                 this.setState({itemlist:response.data.products})
                 
             }
@@ -126,40 +153,113 @@ setTags =(tags)=>{
   this.setState({tags})
 }
 
+mobileDisplay =(openCartM)=>{
+  return(
+    <Root className="App" >
+    <Header>
+    <AddToCartBtnTop is_logged_in={localStorage.getItem('token')}  openCartM={openCartM}  isMobile={this.state.isMobile} />
+    <Title addedToCart={this.state.addedToCart}/>
+    <MenuBarComponent/>
+    </Header>
+    <Modal open={this.state.loginopen} close={this.closeM}>
+        <LoginForm/>
+    </Modal>
+    <Modal open={this.state.cartopen} close={this.closeCartM}>
+        <CartForm />
+    </Modal>
+    <Modal open={this.state.cart2open} close={this.closeCart2M}>
+        <CartForm2 />
+    </Modal>
+    <Modal open={this.state.addressOpen} close={this.closeAddress}>
+        <AddressForm />
+    </Modal>
+    <Switch>
+        <Route path ="/product/:id"   component={ProductDetail}/>
+        <Route path ="/payment_success"   component={PaymentSuccess}/>
+        <Route path ="/address"   component={Address}/>
+        <Route path='/' exact render={(props) => ( <Home {...props}  itemlist={this.state.itemlist} />)}/>
+    </Switch>
+  </Root>
+    )
+
+}
+
+LaptopDisplay =(openCartM)=>{
+  return(
+  <Root className="App" >
+  {/* <Navbar/> */}
+  <Header>
+  <AddToCartBtnTop is_logged_in={localStorage.getItem('token')}  openCartM={openCartM}/>
+    <Title/>
+  <MenuBarComponent/>
+  </Header>
+  <Modal open={this.state.loginopen} close={this.closeM}>
+      <LoginForm/>
+  </Modal>
+  <Modal open={this.state.cartopen} close={this.closeCartM}>
+      <CartForm />
+  </Modal>
+  <Modal open={this.state.cart2open} close={this.closeCart2M}>
+      <CartForm2 />
+  </Modal>
+  <Modal open={this.state.addressOpen} close={this.closeAddress}>
+      <AddressForm />
+  </Modal>
+  <Switch>
+      <Route path ="/product/:id"   component={ProductDetail}/>
+      <Route path ="/payment_success"   component={PaymentSuccess}/>
+      <Route path ="/address"   component={Address}/>
+      {/* <Route path='/' exact component={Home}/> */}
+      <Route path='/' exact render={(props) => ( <Home {...props} isMobile={this.state.isMobile} itemlist={this.state.itemlist} />)}/>
+  </Switch>
+</Root>
+  )
+
+}
+
+
 render(){
-  const {loginopen,openM,closeM,jwt,setJwt,cartopen,openCartM,closeCartM,cart2open,openCart2M,closeCart2M,resetJwt,addressOpen,openAddress,closeAddress,order_id,selectedtag,setSelectedTag,tags,setTags,logout}=this.state
+  const { width,isMobile } = this.state;
+  const {loginopen,openM,closeM,jwt,setJwt,cartopen,openCartM,closeCartM,cart2open,openCart2M,closeCart2M,
+    resetJwt,addressOpen,openAddress,closeAddress,order_id,selectedtag,setSelectedTag,tags,setTags,logout,
+    showAddedToCart,openAddedToCartPopUp,addedToCart,setAddedToCart}=this.state
   return (
     <BrowserRouter>
       <MyContext.Provider value={{loginopen:loginopen,openM:openM,closeM:closeM,jwt:jwt,setJwt:setJwt,
         cartopen:cartopen,openCartM:openCartM,closeCartM:closeCartM,cart2open:cart2open,openCart2M:openCart2M,closeCart2M:closeCart2M,resetJwt:resetJwt,
-        addressOpen:addressOpen,openAddress:openAddress,closeAddress:closeAddress,order_id:order_id,selectedtag:selectedtag,setSelectedTag:setSelectedTag,tags:tags,setTags:setTags,logout:logout}}>
-          <Root className="App" >
-            {/* <Navbar/> */}
-            <Header>
-            <AddToCartBtnTop is_logged_in={localStorage.getItem('token')}  openCartM={openCartM}/>
-              <Title/>
-            <MenuBarComponent/>
-            </Header>
-            <Modal open={this.state.loginopen} close={this.closeM}>
-                <LoginForm/>
-            </Modal>
-            <Modal open={this.state.cartopen} close={this.closeCartM}>
-                <CartForm />
-            </Modal>
-            <Modal open={this.state.cart2open} close={this.closeCart2M}>
-                <CartForm2 />
-            </Modal>
-            <Modal open={this.state.addressOpen} close={this.closeAddress}>
-                <AddressForm />
-            </Modal>
-            <Switch>
-                <Route path ="/product/:id"   component={ProductDetail}/>
-                <Route path ="/payment_success"   component={PaymentSuccess}/>
-                <Route path ="/address"   component={Address}/>
-                {/* <Route path='/' exact component={Home}/> */}
-                <Route path='/' exact render={(props) => ( <Home {...props} itemlist={this.state.itemlist} />)}/>
-            </Switch>
-          </Root>
+        addressOpen:addressOpen,openAddress:openAddress,closeAddress:closeAddress,order_id:order_id,selectedtag:selectedtag,setSelectedTag:setSelectedTag,
+        tags:tags,setTags:setTags,logout:logout,isMobile:isMobile,showAddedToCart:showAddedToCart,openAddedToCartPopUp:openAddedToCartPopUp,addedToCart:addedToCart,setAddedToCart:setAddedToCart}}>
+    <Root className="App" >
+    <Header>
+    <AddToCartBtnTop is_logged_in={localStorage.getItem('token')}  openCartM={openCartM} addedToCart={addedToCart}/>
+      <Title width={this.state.width} />
+    <MenuBarComponent/>
+    </Header>
+    <Modal open={this.state.loginopen} close={this.closeM}>
+        <LoginForm/>
+    </Modal>
+    <Modal open={this.state.cartopen} close={this.closeCartM}>
+        <CartForm />
+    </Modal>
+    <Modal open={this.state.cart2open} close={this.closeCart2M}>
+        <CartForm2 />
+    </Modal>
+    <Modal open={this.state.addressOpen} close={this.closeAddress}>
+        <AddressForm />
+    </Modal>
+    <Modal open={this.state.showAddedToCart}>
+        <AddedToCartPopup/>
+    </Modal>
+    <Switch>
+        <Route path ="/product/:id"   component={ProductDetail}/>
+        <Route path ="/payment_success"   component={PaymentSuccess}/>
+        <Route path ="/address"   component={Address}/>
+        <Route path='/' exact render={(props) => ( <Home {...props}  itemlist={this.state.itemlist} />)}/>
+    </Switch>
+  </Root>
+    
+          {/* {isMobile ? this.mobileDisplay(openCartM) : this.LaptopDisplay(openCartM)} */}
+
         </MyContext.Provider>
     </BrowserRouter>
     )
@@ -178,7 +278,8 @@ const Header = styled.div`
 const Root=styled.div`
 display:flex;
 flex-direction:column;
-width:100%;
+width:auto;
 height:100%;
+margin: 0 16px;
 `
 const ModalTitle=styled.text``

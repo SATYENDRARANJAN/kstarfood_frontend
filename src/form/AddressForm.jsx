@@ -10,6 +10,8 @@ class Address extends React.Component{
     constructor(props){
         super(props)
         this.state={}
+        const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
     }
 
     componentDidMount=()=>{
@@ -17,10 +19,12 @@ class Address extends React.Component{
     }
     addressSchema =()=> Yup.object().shape({
         firstname: Yup.string()
+            .matches(/^[aA-zZ\s]+$/,'Only letters allowed !')
           .min(2, 'Too Short!')
           .max(50, 'Too Long!')
           .required('Required'),
         lastname: Yup.string()
+        .matches(/^[aA-zZ\s]+$/,'Only letters allowed !')
           .min(2, 'Too Short!')
           .max(50, 'Too Long!')
           .required('Required'),
@@ -33,17 +37,24 @@ class Address extends React.Component{
           .max(50, 'Too Long!')
           .required('Required'),
         city: Yup.string()
+        .matches(/^[aA-zZ\s]+$/,'Only letters allowed !')
+
           .min(2, 'Too Short!')
           .max(50, 'Too Long!')
           .required('Required'),
-        pincode: Yup.string()
+        state: Yup.string()
+        .matches(/^[aA-zZ\s]+$/,'Only letters allowed !')
+
           .min(2, 'Too Short!')
           .max(50, 'Too Long!')
           .required('Required'),
-        phone: Yup.string()
-          .min(2, 'Too Short!')
-          .max(50, 'Too Long!')
-          .required('Required'),
+        pincode: Yup
+            .number()
+            .required('Required')
+            .test('len', 'Must be exactly 6 characters', val => val.toString().length === 6),
+        phone: Yup.number()
+          .required('Required')
+          .test('len', 'Must be exactly 10 characters', val => val.toString().length === 10),
         message: Yup.string()
           .min(2, 'Too Short!')
           .max(50, 'Too Long!')
@@ -75,7 +86,7 @@ class Address extends React.Component{
                     alert(response.razorpay_order_id);
                     that.update_order(response.razorpay_payment_id,response.razorpay_order_id)
                     localStorage.setItem('payment_id',response.razorpay_payment_id)
-                    localStorage.setItem('rporder_id',response.order_id)
+                    localStorage.setItem('rporder_id',response.razorpay_order_id)
                     window.location.href='/payment_success';
                 }
                 /**
@@ -126,10 +137,14 @@ class Address extends React.Component{
                                     city:'',
                                     pincode:'',
                                     phone:'',
+                                    state:'',
                                     message:'',
                                     order_id:order_id,
-                                    }}                    
+                                    }}    
+                    validateOnChange={false}
+                    validateOnBlur={false}                
                     validationSchema={this.addressSchema}
+                    enableReinitialize={true}
                     onSubmit={this.handleSubmit}>   
                 {
                     ({values,errors,touched,handleChange,handleBlur,handleSubmit,isSubmitting})=>(
@@ -215,7 +230,8 @@ class Address extends React.Component{
                              onBlur={handleBlur}
                              value={values.message}/>
                              {errors.message && touched.message ? (<ErrorText>{errors.message}</ErrorText>) : null}
-                            <Submit type="submit">Submit</Submit>
+                             <Submit type="submit">Submit</Submit>
+
                         </Form>
                     )
                 }
@@ -233,13 +249,26 @@ const Root= styled.div`
     width:100%;
     height:100%;
     flex-direction:column;
-    background-color:#546546;
-    
+    background-color:#7b5734;
+    overflow-y:scroll;
+    padding-bottom:50px;
+    max-width:500px;
+    align-self:center;
+    background-color: rgb(77, 53, 29,0.2);
+
 `
 
 const Input= styled.input`
-height:30px;
-margin-bottom:4px;
+display:flex;
+height:45px;
+margin-bottom:10px;
+padding-left:20px;
+// border-bottom :#7b5734 10px solid;
+border-radius:5px;
+font-size:16px;
+line-height:1.2;
+letter-spacing:1.1px;
+font-style:Roboto;
 `
 
 const Title=styled.div`
@@ -247,22 +276,41 @@ display:flex;
 margin:20px;
 color:#f4f4f4;
 font-size:30px;
+line-height:1.2;
+letter-spacing:1.1px;
 `
 
 const Form = styled.form`
 display:flex;
 flex-direction:column;
-padding:24px;
+padding:24px;    position: relative;
+
 `
 
 const Submit=styled.button`
+    display:flex;
+    left:24px;
+    right:24px;
     height:56px;
+    // position:fixed;
+    bottom:24px;
+    display: inline-block;
+    font-size:18px;
+    background-color:#ffe6cc;
+    border-radius:6px;
+    line-height:1.2;
+    letter-spacing:1.1px;
+    font-style:Roboto;
+    // width:100%;
+    outline:None;
+    text-decoration:bold;
+
 `
 
 const ErrorText=styled.div`
     display:flex;
-    font-size:10.5px;
-    font-color:#343434;
+    font-size:12px;
+    color:#ffcccb;
     margin-bottom:8px;
 
 `
