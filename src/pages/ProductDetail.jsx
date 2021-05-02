@@ -265,6 +265,11 @@ class ProductDetail extends React.Component{
                 {localStorage.getItem('token') && <AddToCart onClick={()=>{this.addToCart(setAddedToCart)}}>Add to Cart</AddToCart>}
                 <BuyNow onClick={()=>{this.gotoBuyNow(openM,openCart2M)}}> Buy Now</BuyNow>
             </StickyDiv>
+            
+            <MobPanel >
+                <MobImage src={fssai}/>
+                <MobImage src={gmo}/>
+            </MobPanel>  
             {this.state.addedPopUp && <AddedPopUp show={this.state.addedPopUp} isMobile={isMobile}> Item Added </AddedPopUp>}
         </RootMob>)
     }
@@ -484,10 +489,22 @@ const Panel = styled.div`
     width: 15%;
 `
 
+const MobPanel = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
 const Image= styled.img`
     display:flex;
     width:100%;
     object-fit:cover;
+
+`
+const MobImage= styled.img`
+    display:flex;
+    width:50%;
+    margin-top:12px;
+    object-fit:contain;
 
 `
 
