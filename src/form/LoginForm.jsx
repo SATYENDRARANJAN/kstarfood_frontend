@@ -51,7 +51,10 @@ class LoginForm extends React.Component{
         }
         if ((this.state.phone).length==10){
             let params={
-                'phone':this.state.phone
+                'phone':this.state.phone,
+                utm_source:sessionStorage.getItem('utm_source'),
+                utm_medium:sessionStorage.getItem('utm_medium'),
+                utm_campaign:sessionStorage.getItem('utm_campaign')
             }
             let headers = { headers:{
                 'Accept': 'application/json',
