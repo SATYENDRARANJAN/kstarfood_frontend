@@ -79,7 +79,7 @@ export const AddToCartBtnTop = ({is_logged_in,openCartM,addedToCart})=>{
 const TitleDiv = styled.h2`
     color: ${props => (props.color ? props.color : '#7b5734')};
     text-align: left;
-    font-size:${props => (props.width >565? "50px":"30px")};
+    font-size:${props => (props.width >565? "50px":"20px")};
     max-width:${props =>(props.width >565?"auto":"auto")};
     margin-top:45px;
     margin-bottom:24px;

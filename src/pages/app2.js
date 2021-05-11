@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Switch ,Route} from 'react-router-dom';
-import styled,{keyframes} from 'styled-components'
+import styled from 'styled-components'
 import Home from './pages/Home.jsx';
 import Address from './pages/Address.jsx';
 import ProductDetail from './pages/ProductDetail.jsx'
@@ -19,13 +19,11 @@ import LoginForm from './form/LoginForm';
 import CartForm from './form/CartForm'
 import CartForm2 from './form/CartForm2'
 import AddressForm from './form/AddressForm'
+import {MyProvider,MyConsumer} from './globalStore/MyProvider.jsx'
 import AddedToCartPopup  from './components/AddedToCartPopup.jsx'
-import NavPanel from './components/NavPanel.jsx'
 import React from 'react';
-import shopping from './assets/images/shopping-cart.svg'
-import user from './assets/images/user.svg'
+import SlidingPanel from 'react-sliding-side-panel';
 import "./styles.css";
-
 
 class App extends React.Component{
   static whyDidYouRender = true
@@ -36,7 +34,6 @@ class App extends React.Component{
       mobile :'',
       width: window.innerWidth,
       isMobile: window.innerWidth <= 500,
-      menuOpen:false,
 
       loginopen:false,
       openM:this.openM,
@@ -54,9 +51,9 @@ class App extends React.Component{
       openAddress:this.openAddress,
       closeAddress:this.closeAddress,
       order_id:'',
-      selectedtag: localStorage.getItem('tag') || 'all' ,
+      selectedtag: localStorage.getItem('tag') ,
       setSelectedTag:this.setSelectedTag,
-      tags:['all'],
+      tags:[],
       setTags:this.setTags,
       itemlist:[],
       logout:this.logout,
@@ -64,16 +61,10 @@ class App extends React.Component{
       openAddedToCartPopUp:this.openAddedToCartPopUp,
       addedToCart:false,
       setAddedToCart:this.setAddedToCart,
-      handleMenuClick:this.handleMenuClick
     }
     const isMobile = window.innerWidth <= 500;
     console.log("isMobile",isMobile)
   }
-
-  handleMenuClick=async()=> {
-    await this.setState({menuOpen:!this.state.menuOpen});
-  }
-
 
   handleWindowSizeChange = () => {
     this.setState({ width: window.innerWidth });
@@ -84,22 +75,8 @@ class App extends React.Component{
     }
   };
 
-  async componentDidMount(){
-    var taglist=[]
+  componentDidMount(){
     window.addEventListener('resize', this.handleWindowSizeChange);
-    await axiosInstance.get('/shop/get_tags').
-        then(async response=>{
-            console.log(response)
-            await localStorage.setItem('tags',response.data)
-            for (let obj of response.data){
-              taglist.push(obj['tag_name'])
-            }
-            await this.setState({tags:taglist})
-        })
-        console.log(this.state.tags)
-    const menu = ['About Us','Our Products','Services','FAQ','Contact Us','About Us','Our Products','Services','FAQ','Contact Us']
-    await this.setState({tags:[...this.state.tags,...menu]})
-    console.log(this.state.tags)
   }
 
   is_logged_in=()=>{
@@ -169,7 +146,8 @@ class App extends React.Component{
           then((response)=> 
               {
                   console.log(response)
-                  this.setState({itemlist:response.data.products})  
+                  this.setState({itemlist:response.data.products})
+                  
               }
           )
   }
@@ -181,7 +159,15 @@ class App extends React.Component{
   mobileDisplay =(openCartM)=>{
     return(
       <Root className="App" id="App">
-
+    
+        <div>
+          <button onClick={() => this.setOpenPanel(true)}>Open</button>
+        </div>
+      <SlidingPanel
+        type={'left'}
+        isOpen={this.state.openPanel}
+        size={30}
+      >
         <Header>
 
         <AddToCartBtnTop is_logged_in={localStorage.getItem('token')}  openCartM={openCartM}  isMobile={this.state.isMobile} />
@@ -206,6 +192,7 @@ class App extends React.Component{
           <Route path ="/address"   component={Address}/>
           <Route path='/' exact render={(props) => ( <Home {...props}  itemlist={this.state.itemlist} />)}/>
       </Switch>
+      </SlidingPanel>
 
     </Root>
       )
@@ -246,73 +233,22 @@ class App extends React.Component{
   }
 
   render(){
-    const styles= 
-    {
-      container:{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        zIndex: '99',
-        opacity: 0.9,
-        display:'flex',
-        alignItems:'center',
-        background: 'black',
-        width: '100%',
-        color: 'white',
-        fontFamily:'Lobster',
-      },
-      logo: {
-        margin: '0 auto',
-      },
-      body: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100vw',
-        height: '100vh',
-        filter: this.state.menuOpen ? 'blur(2px)':null,
-        transition: 'filter 0.5s ease',
-      },
-    }
-
-  
-
     const { width,isMobile } = this.state;
     const {loginopen,openM,closeM,jwt,setJwt,cartopen,openCartM,closeCartM,cart2open,openCart2M,closeCart2M,
       resetJwt,addressOpen,openAddress,closeAddress,order_id,selectedtag,setSelectedTag,tags,setTags,logout,
-      showAddedToCart,openAddedToCartPopUp,addedToCart,setAddedToCart,handleMenuClick}=this.state
+      showAddedToCart,openAddedToCartPopUp,addedToCart,setAddedToCart}=this.state
     return (
       <BrowserRouter>
         <MyContext.Provider value={{loginopen:loginopen,openM:openM,closeM:closeM,jwt:jwt,setJwt:setJwt,
           cartopen:cartopen,openCartM:openCartM,closeCartM:closeCartM,cart2open:cart2open,openCart2M:openCart2M,closeCart2M:closeCart2M,resetJwt:resetJwt,
           addressOpen:addressOpen,openAddress:openAddress,closeAddress:closeAddress,order_id:order_id,selectedtag:selectedtag,setSelectedTag:setSelectedTag,
-          tags:tags,setTags:setTags,logout:logout,isMobile:isMobile,showAddedToCart:showAddedToCart,openAddedToCartPopUp:openAddedToCartPopUp,addedToCart:addedToCart,
-          setAddedToCart:setAddedToCart,handleMenuClick:handleMenuClick}}>
+          tags:tags,setTags:setTags,logout:logout,isMobile:isMobile,showAddedToCart:showAddedToCart,openAddedToCartPopUp:openAddedToCartPopUp,addedToCart:addedToCart,setAddedToCart:setAddedToCart}}>
       <Root className="App" >
-      {/* <Header>
+      <Header>
       <AddToCartBtnTop is_logged_in={localStorage.getItem('token')}  openCartM={openCartM} addedToCart={addedToCart}/>
-      <Title width={this.state.width} />
-      </Header> */}
-      {!this.state.isMobile  &&<MenuBarComponent/>}
-
-       {/* {this.state.menuOpen &&  */}
-      
-        <NavPanel tags={this.state.tags} open={this.state.menuOpen}/>
-       {/* } */}
-       
-      <MobileHeader>
-        <Heading>
-          CHERIE
-        </Heading>
-        <IconsDiv>
-           <Account src={user}/>
-          {this.state.is_logged_in && <Cart src={shopping} onClick={openCartM}/>}
-          {/* <List src={list} onClick={()=>this.handleMenuClick()}/> */}
-          <MenuButton open={this.state.menuOpen} onClick={()=>this.handleMenuClick()} color='black'/>
-
-        </IconsDiv>
-      </MobileHeader>
-
+        <Title width={this.state.width} />
+      <MenuBarComponent/>
+      </Header>
       <Modal open={this.state.loginopen} close={this.closeM}>
           <LoginForm/>
       </Modal>
@@ -335,78 +271,14 @@ class App extends React.Component{
           <Route path='/' exact render={(props) => ( <Home {...props}  itemlist={this.state.itemlist} />)}/>
       </Switch>
     </Root>
+      
+            {/* {isMobile ? this.mobileDisplay(openCartM) : this.LaptopDisplay(openCartM)} */}
+
           </MyContext.Provider>
       </BrowserRouter>
       )
   }
 }
-
-
-
-/* MenuButton.jsx */
-class MenuButton extends React.Component {
-  constructor(props){
-    super(props);
-    this.state={
-      open: this.props.open? this.props.open:false,
-      color: this.props.color? this.props.color:'black',
-    }
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(nextProps.open !== this.state.open){
-      this.setState({open:nextProps.open});
-    }
-  }
-  
-  handleClick(){
-  this.setState({open:!this.state.open});
-  }
-  
-  render(){
-    const styles = {
-      container: {
-        display:'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        cursor: 'pointer',
-        marginLeft: '16px',
-      },
-      line: {
-        height: '4px',
-        width: this.state.open ?'25px':'20px',
-        borderRadius:'3px',
-        background: this.state.color,
-        transition: 'all 0.2s ease',
-      },
-      lineTop: {
-        transform: this.state.open ? 'translateX(4px) translateY(-2px)rotate(45deg)':'none',
-        transformOrigin: 'top left',
-        marginBottom: '2px',
-      },
-      lineMiddle: {
-        opacity: this.state.open ? 0: 1,
-        transform: this.state.open ? 'translateX(-16px)':'none',
-      },
-      lineBottom: {
-        transform: this.state.open ? 'translateX(-1px) translateY(3px) rotate(-45deg)':'none',
-        transformOrigin: 'top left',
-        marginTop: '2px',
-      },       
-    }
-    return(
-      <div style={styles.container} 
-        onClick={this.props.onClick ? this.props.onClick: 
-          ()=> {this.handleClick();}}>
-        <div style={{...styles.line,...styles.lineTop}}/>
-        <div style={{...styles.line,...styles.lineMiddle}}/>
-        <div style={{...styles.line,...styles.lineBottom}}/>
-      </div>
-    )
-  }
-}
-
 
 export default App;
 // export default withRouter(connect(mapStateToProps)(App));
@@ -424,39 +296,4 @@ width:auto;
 height:100%;
 margin: 0 16px;
 `
-const MobileHeader =styled.div`
-  display:flex;
-  justify-content:space-between;
-  margin:0 0px;
-  height:46px;
-  align-items:center;
-`
-const Heading=styled.text`
-  font-size : 20px;
-  color:#c0a680;
-  font-family:Roboto;
-  font-weight:900;
-  letter-spacing:1.4px;
-
-`
-const IconsDiv  =styled.div`
-    display:flex;
-    flex-direction:row;
-`
-const Account=styled.img`
-  width:24px;
-  height:24px;
-  margin-left:16px;
-`
-const List=styled.img`
-  width:24px;
-  height:24px;
-  margin-left:16px;
-`
-const Cart=styled.img`
-  width:24px;
-  height:24px;
-  margin-left:16px;
-`
 const ModalTitle=styled.text``
-

@@ -24,10 +24,10 @@ class MenuBarComponent extends React.Component{
         // )
 
         await axiosInstance.get('/shop/get_tags').
-        then(response=>{
+        then(async response=>{
             console.log(response)
-            localStorage.setItem('tags',response.data)
-            this.setState({tags:response.data})
+            await localStorage.setItem('tags',response.data)
+            await this.setState({tags:response.data})
         })
         console.log(this.state.tags)
     }
