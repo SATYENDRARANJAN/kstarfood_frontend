@@ -25,6 +25,7 @@ import React from 'react';
 import shopping from './assets/images/shopping-cart.svg'
 import user from './assets/images/user.svg'
 import "./styles.css";
+import ModalStateUpdaterButton from './components/ModalStateUpdaterButton.jsx'
 
 
 class App extends React.Component{
@@ -305,9 +306,8 @@ class App extends React.Component{
           CHERIE
         </Heading>
         <IconsDiv>
-           <Account src={user}/>
-          {this.state.is_logged_in && <Cart src={shopping} onClick={openCartM}/>}
-          {/* <List src={list} onClick={()=>this.handleMenuClick()}/> */}
+           {!this.state.is_logged_in ?<ModalStateUpdaterButton src={user}/>:null}
+          {!this.state.is_logged_in && <Cart src={shopping} onClick={openCartM}/>}
           <MenuButton open={this.state.menuOpen} onClick={()=>this.handleMenuClick()} color='black'/>
 
         </IconsDiv>

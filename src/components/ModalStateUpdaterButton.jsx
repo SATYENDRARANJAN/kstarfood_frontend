@@ -1,6 +1,7 @@
 import MyContext from '../globalStore/MyContext.jsx';
 import { Context } from '../globalStore/store.jsx';
 import styled from 'styled-components'
+import user from '../assets/images/user.svg'
 
 function ModalStateUpdaterButton() {
 //   // The Theme Toggler Button receives not only the theme
@@ -9,9 +10,10 @@ function ModalStateUpdaterButton() {
       <MyContext.Consumer>
        { ({openM})=>(
      
-            <Button onClick={openM}>
-                Login
-            </Button>
+            // <Button onClick={openM}>
+            //     Login
+            // </Button>
+            <Account onClick={openM} src={user}></Account>
          
         )}
       </MyContext.Consumer>
@@ -53,4 +55,10 @@ margin-left:6px;
   color: #ffe6cc;
   outline:0;
 }
+`
+
+const Account=styled.img`
+  width:24px;
+  height:24px;
+  margin-left:16px;
 `
