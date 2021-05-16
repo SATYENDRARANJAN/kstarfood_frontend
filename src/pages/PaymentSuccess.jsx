@@ -1,5 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import orderconfirm from '../assets/images/orderconfirm.png'
+import emailreceipt from '../assets/images/mailreceipt.png'
+
 class PaymentSuccess extends React.Component{
 
 
@@ -9,20 +12,25 @@ class PaymentSuccess extends React.Component{
     render(){
         return(
             <Root>
-                <Success>
-                    Thank you for joining the Cherie Family!!
+                <IconsDiv>
+                    <Icon src={orderconfirm}/>
+                </IconsDiv>
+                <Title>
+                    Order Completed
+                </Title>
+                <Success> 
+                    {/* Thank you for joining the Cherie Family!!
                     <br/>
                     Your Cherie  will be delivered very soon . 
                     <br/>
-                    <br/>
+                    <br/> */}
                     <WrapperDiv>
 
-                    <div style ={{'width':'300px','line-height':'1.4',    'border-bottom':'1px solid black'
-}}> <i>Your payment details are :</i></div>
-                    <br/>
-                    <br/>
+                    <div style ={{'width':'300px','fontWeight':'600','lineHeight':'2.7',"fontFamily":"Montserrat, sans-serif"}}>
+                                    Your payment details are :
+                    </div>
                     <BoxDiv style={{'width':'100%'}} >
-                        <ItemLeft style={{'font-weight':'400','text-decoration':'bold'}}>
+                        <ItemLeft>
                             Payment Id: 
                         </ItemLeft>
                         <ItemRight>
@@ -37,6 +45,23 @@ class PaymentSuccess extends React.Component{
                             {localStorage.getItem('rporder_id')}
                         </ItemRight>
                     </BoxDiv>
+                    <IconsDiv style={{"margin-top":"20px"}}>
+                        <Icon src={emailreceipt} style={{"width":"50px",'height':'50px'}}/>
+                    </IconsDiv>
+                    <div style ={{'width':'300px','font-weight':'600','font-size':'13px','lineHeight':'1.1',"fontFamily":"Montserrat, sans-serif"}}>
+                        An email receipt including the details about your order has been sent to the email address provided. 
+                        Please keep it for your records.                     
+                    </div>
+                    <div style ={{'width':'300px','font-weight':'600','font-size':'13px','lineHeight':'1.1',"fontFamily":"Montserrat, sans-serif"}}>
+                    
+                    <br/>
+Thank you for joining the Cherie Family!!
+                    <br/>
+                    Your Cherie  will be delivered very soon . 
+                    <br/>
+                    <br/>           
+                    </div>
+                    
                     </WrapperDiv>
                 </Success>
             </Root>
@@ -46,23 +71,24 @@ class PaymentSuccess extends React.Component{
 
 const Root = styled.div`
     display: flex;
+    flex-direction:column;
     // height:100vh;
     border : 1px solid #4e4e4e;
     border-radius:9px;
-    padding:10px 20px 100px 20px;
+    padding:30px 20px 100px 20px;
     
 `
 
 const Success = styled.text`
-display:flex;
-flex-direction:column;
+    display:flex;
+    flex-direction:column;
     font-size:18px;
     font-family:Roboto;
     line-height:1.2;
     letter-spacing:1.1px;
     // max-width:500px;;
     width:100%;
-    padding:10px;
+    // padding:10px;
     outline:None;
     text-decoration:bold;
 `
@@ -76,6 +102,7 @@ const BoxDiv=styled.div`
 `
 const ItemLeft=styled.div`
     display:flex;
+    font-family:'Montserrat', sans-serif;
     // border-bottom:1px solid #75e834;
     width:40%;
     border-radius:6px;
@@ -88,7 +115,7 @@ const ItemLeft=styled.div`
     // padding-right:10px;
     outline:None;
     text-decoration:bold;
-    margin-bottom:26px;
+    margin-bottom:5px;
     font-size:14px;
 
 
@@ -96,6 +123,7 @@ const ItemLeft=styled.div`
 
 const ItemRight=styled.div`
     display:flex;
+    font-family:'Montserrat', sans-serif;
     // border:1px solid #75e834;
     width:60%;
     border-radius:6px;
@@ -109,9 +137,6 @@ const ItemRight=styled.div`
     // padding-right:10px;
     font-size:14px;
     text-decoration:bold;
-
-
-
 `
 
 const WrapperDiv = styled.div`
@@ -121,5 +146,32 @@ max-width:500px;
 // justify-content:center;
 align-self:center;
 `
+const IconsDiv  =styled.div`
+    display:flex;
+    flex-direction:row;
+    width:auto;
+    align-items:center;
+    // background-color:#7b5734;
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    justify-content:center;
+`
+const Icon=styled.img`
+    display:flex;
+    width:60px;
+    height:60px;
+    // padding-top:6px;
+`
+const Title=styled.text`
+    font-family:'Montserrat', sans-serif;
+    font-size:30px;
+    font-weight:900;
+    color:#4e4e4e;
+    line-height:1.7;
+    // letter-spacing:1.2px;
+
+`
+
 
 export default PaymentSuccess

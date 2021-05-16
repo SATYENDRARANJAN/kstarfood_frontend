@@ -254,7 +254,14 @@ const Root= styled.div`
     padding-bottom:50px;
     max-width:500px;
     align-self:center;
-    background-color: rgb(77, 53, 29,0.2);
+    // background-color: #ffe6cc;
+    background-color: linear-gradient(to bottom,#fff  0%, #ffe6cc 200%); 
+    background: -webkit-gradient(to bottom,#fff  0%, #ffe6cc 200%);  /* Chrome, Safari4+ */
+    background: -webkit-linear-gradient(to bottom,#fff  0%, #ffe6cc 200%);  /* Chrome10+, Safari5.1+ */
+    background: -moz-linear-gradient(to bottom,#fff  0%, #ffe6cc 300%);     /* FF3.6+ */
+    background: linear-gradient(to bottom,#fff  0%, #ffe6cc 200%);      /* W3C */
+    // opacity:0.9;
+    // background-color: rgb(255, 230, 204,0.9);//rgb(160, 87, 52,0.9);
 
 `
 
@@ -274,7 +281,7 @@ font-style:Roboto;
 const Title=styled.div`
 display:flex;
 margin:20px;
-color:#f4f4f4;
+color:#7b5734;
 font-size:30px;
 line-height:1.2;
 letter-spacing:1.1px;

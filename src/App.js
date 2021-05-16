@@ -423,6 +423,7 @@ flex-direction:column;
 width:auto;
 height:100%;
 margin: 0 16px;
+
 `
 const MobileHeader =styled.div`
   display:flex;
