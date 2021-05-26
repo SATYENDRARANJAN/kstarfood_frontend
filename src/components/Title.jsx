@@ -83,7 +83,7 @@ const TitleDiv = styled.h2`
     max-width:${props =>(props.width >565?"auto":"auto")};
     margin-top:45px;
     margin-bottom:24px;
-    font-family:Monoton;
+    font-family:'Montserrat', sans-serif;
     font-weight:590;
 `
 const MenuBar =styled.div`

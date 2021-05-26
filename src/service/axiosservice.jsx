@@ -3,7 +3,7 @@ import config from './../config.json'
 
 export const axiosInstance =  axios.create({
     baseURL : config.BASE_URL,
-    timeout :1000,   
+    // timeout :1000,   
     headers:{'Authorization': localStorage.getItem('token')} 
 })
 

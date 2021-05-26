@@ -16,6 +16,12 @@ class NavPanel extends React.Component{
         this.setState({open:nextProps.open});
       }
     }
+
+
+    onBackdropClick=(handleMenuClick)=>{
+      handleMenuClick(!this.state.open)
+
+    }
     
     handleLinkClick=(val,setSelectedTag,handleMenuClick)=> {
         debugger
@@ -25,7 +31,7 @@ class NavPanel extends React.Component{
         // await this.setState({menuOpen: false});
         // await this.setSelectedTag(val)
          localStorage.setItem('tag',val)
-         this.props.history.push("/")
+         this.props.history.push('/')
       }
     
 
@@ -39,6 +45,7 @@ class NavPanel extends React.Component{
             return (
               <MenuItem 
                 key={index} 
+                id={index}
                 delay={`${index * 0.1}s`}
                 onClick={()=>this.handleLinkClick(val,setSelectedTag,handleMenuClick)}>{val}</MenuItem>)
           });
@@ -50,21 +57,22 @@ class NavPanel extends React.Component{
         
         return(
             <MyContext.Consumer>
-            {({setSelectedTag,handleMenuClick})=>(
-              <React.Fragment>
-                {this.state.open ?
-                <NavPanelDiv slideIn={this.state.open}>
-                  <Heading>
-                    CHERIE
-                  </Heading>         
-                      {this.getMenuItems(setSelectedTag,handleMenuClick)}
-                </NavPanelDiv>:null
-                }
-        </React.Fragment>
-        )}
-        
-        </MyContext.Consumer>)
+                {({setSelectedTag,handleMenuClick})=>(
+                  <React.Fragment>
+                    {this.state.open ?
+                    <Backdrop onClick={()=>this.onBackdropClick(handleMenuClick)}/>:null}
 
+                    {this.state.open ?
+                    <NavPanelDiv slideIn={this.state.open}>
+                      <MenuItem>
+                        CHERIE
+                      </MenuItem>         
+                      {this.getMenuItems(setSelectedTag,handleMenuClick)}
+                    </NavPanelDiv>:null
+                    }
+                  </React.Fragment>
+                  )}
+            </MyContext.Consumer>)
     }
 }
 
@@ -91,7 +99,8 @@ const slideOut=keyframes`
 
 const NavPanelDiv=styled.div`
   width: 70%;
-  height:100vh;
+  height:100%;
+  justify-content:center;
   position:fixed;
   background-color:#4e4e4e;
   z-index:1100;
@@ -100,18 +109,23 @@ const NavPanelDiv=styled.div`
   animation: ${props=>(props.slideIn ? css`1.2s ${slideIn} forwards`:css`1.2s ${slideOut} `)};
   // animation-duration: 2s;
   padding-top:24px;
-  overflow-y:scroll,
+  justify-content:center;
+  overflow-y:scroll;
 
 
 `
 
 
 const Heading=styled.text`
+display:flex;
   font-size : 20px;
   color:#c0a680;
-  font-family:Roboto;
+  font-family:'Montserrat', sans-serif;
+
   font-weight:900;
   letter-spacing:1.4px;
+  margin-left:14px;
+  text-align:center;
 
 `
 
@@ -146,6 +160,7 @@ class MenuItem extends React.Component{
           transition: 'color 0.2s ease-in-out',
           animation: '0.5s slideIn forwards',
           animationDelay:this.props.delay,
+          textAlign:'center'
   
         },
         line: {
@@ -173,6 +188,20 @@ class MenuItem extends React.Component{
       )
     }
   }
+
+
+  const Backdrop=styled.div`
+  // display:flex;
+  background-color:#424242;
+  opacity:0.4;
+  position:fixed;
+  left:0;
+  top:0;
+    width:100%;
+    height:100%;
+    z-index:1000;
+
+  `
   
   // /* Menu.jsx */
   // class Menu extends React.Component {

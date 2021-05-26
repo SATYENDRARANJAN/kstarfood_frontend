@@ -3,9 +3,12 @@ import React ,{useState,Component}from 'react'
 import banner from './../assets/images/cheriebanner.png'
 import {axiosInstance} from './../service/axiosservice.jsx'
 import placeholder from './../assets/images/placeholder.png'
+// import loader1 from './../assets/images/hearts.svg'
+import loader1 from './../assets/images/loader1.gif'
 import * as config from './../config.json' 
 import Service from '../service/service'
 import MyContext from '../globalStore/MyContext'
+import ScrollComponent from '../components/ScrollComponent'
 import { withRouter } from 'react-router'
 const images = require.context('./../assets/images', true);
 
@@ -13,11 +16,13 @@ class Home extends React.Component{
     static contextType = MyContext
     constructor(props){
         super(props)
+        console.log("In Constructor",props.tag)
         this.state={
              itemlist :[],
-             tag:'',
+             tag:props.tag,
              isMobile:props.isMobile,
-             openPanel:false
+             openPanel:false,
+             loader_category:false
         }
     }
 
@@ -35,6 +40,7 @@ class Home extends React.Component{
           }
         }
     }
+
     setOpenPanel=(val)=>{
         this.setState({openPanel:val})
     }
@@ -42,8 +48,8 @@ class Home extends React.Component{
     componentDidMount=async()=>{
         console.log(config.BASE_URL)
         this.saveUrlParams()
-        let itemlist = this.props.itemlist
-        await this.setState({itemlist:itemlist})
+        // let itemlist = this.props.itemlist
+        // await this.setState({itemlist:itemlist})
         
         let selectedTag = localStorage.getItem('tag')|| 'all'
         this.context.setSelectedTag(selectedTag )
@@ -51,7 +57,23 @@ class Home extends React.Component{
         this.props.history.push({pathname:'/',params})
         let isMobile = this.props.isMobile
         await this.setState({isMobile})
-        
+        await(this.setState({loader_category:true}))
+
+        // await axiosInstance.get('/shop/products_popular').
+        // then(async response=>{
+        //     console.log(response)
+        //     await this.setState({popular_products:response.data})
+
+        // })
+        console.log("In CDM :",this.state.tag)
+        await axiosInstance.get("/shop/products/list/" + this.state.tag).
+          then(async(response)=> 
+              {
+                  console.log(response)
+                  await this.setState({itemlist:response.data.products})  
+                  await(this.setState({loader_category:false}))
+              }
+          )
     }
 
     goToProductDetail=(product_slug)=>{
@@ -81,7 +103,7 @@ class Home extends React.Component{
     getItemViewMobile=(item)=>{
         return(
             <ItemRootMob id={item.product_slug} onClick={()=>this.goToProductDetail(item.product_slug)}>
-            <ItemDivMob >
+            <ItemDivMob>
                 <ItemImage src={item.img} alt='prdimg'/>
                 <ItemName>
                 {item.product_name}
@@ -99,18 +121,56 @@ class Home extends React.Component{
 
     }
 
-    renderProductList =  (selectedTag,isMobile)=>{
-        let div=[]
-        var that =this
-        var item=[]
+    getItemViewMobileSroll= (item)=>{
+        return(
+            <ItemRootMob id={item.product_slug} onClick={()=>this.goToProductDetail(item.product_slug)}>
+            <ItemDivMob style={{'width':'120px'}}>
+                <ItemImage src={item.img} alt='prdimg'/>
+                <ItemName>
+                {item.product_name}
+                </ItemName>
+                <ItemDescription>
+                {item.heading}
+                </ItemDescription>
+                <ItemSubtext>
+                {item.subtext}
+                </ItemSubtext>
+                <View>View</View>
+            </ItemDivMob>
+            </ItemRootMob>
+        )
 
-        {isMobile ?this.props.itemlist.map((item)=>{div.push(this.getItemViewMobile(item))}): this.props.itemlist.map((item)=>{div.push(this.getItemView(item))})}
-        
-        return div
+    }
+
+    renderProductList =  (isMobile)=>{
+        let div=[]
+        this.state.itemlist && this.state.itemlist.map((item)=>{div.push(this.getItemViewMobile(item))})
+        console.log("InRPL");
+        let loaderdiv = this.state.loader_category ?<ItemImage src={loader1}/>:div
+        return loaderdiv
     }
 
     setTag =(tag)=>{
         this.setState({tag})
+    }
+
+    getPopularProducts=(isMobile)=>{
+        let div=[]
+            debugger
+            this.state.popular_products && this.state.popular_products.products.map(product=>(div.push(this.getItemViewMobileSroll(product,isMobile))))
+            
+        return(
+            <React.Fragment>
+            <Text>Popular Products</Text>
+
+        <PaymentOptions>
+            {/* <IconDiv2 gap='18px' >
+                <Icon2  src={}/>
+            </IconDiv2> */}
+            {div}
+        </PaymentOptions>
+        </React.Fragment>
+        )
     }
 
     render(){
@@ -120,9 +180,12 @@ class Home extends React.Component{
                 {({selectedtag,setSelectedTag,isMobile})=>(
                     <Root>
                         <Banner/>
+                        {/* {this.getPopularProducts(isMobile)} */}
+                        <ScrollComponent/>
+                        <Text>ALL PRODUCTS</Text>
                         <ListItemsDiv>
                             {/* { this.state.itemlist && this.state.itemlist.map(item =>this.getItemView(item))} */}
-                            { this.renderProductList(this.props.itemlist,isMobile)}
+                            { this.renderProductList(isMobile)}
                         </ListItemsDiv>
                         <Footer>
 
@@ -143,6 +206,7 @@ const Root = styled.div`
     height:100%;
     flex-direction: column;
     text-align: center;
+    overflow:hidden;
 
 `
 
@@ -283,6 +347,44 @@ const Buy =styled.div`
 const Footer = styled.div`
 
 `
+const Text= styled.text`
+    font-size: 14px;
+    font-family:'Montserrat', sans-serif;
+    background-color:#eee;
+    font-weight:1000;
+    text-decoration:bold;
+    text-align:left;
+    margin:12px 12px 0 0px;
 
 
-export  default  Home
+`
+
+const PaymentOptions= styled.div`
+    display:flex;
+    flex-direction:row;
+    height:auto;
+    width:auto;
+    overflow-y:scroll;
+    margin-bottom:24px;
+`
+const IconDiv2=styled.div`
+    display:flex;
+    width: auto;
+    height: auto;
+    border:1px solid #eee;
+    border-radius:4px;
+    margin:11px 0;
+    margin-left:8px;
+    margin-right:${props=>props.gap?props.gap:''}
+
+`
+
+
+const Icon2 = styled.img`
+    width: auto;
+    height: 60px;
+    padding: 5px;
+`
+
+
+export  default  withRouter(Home)

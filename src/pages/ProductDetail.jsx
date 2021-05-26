@@ -376,7 +376,7 @@ const RightWrapperDiv = styled.div`
 const ProductName=styled.text`
     font-size:24px; 
     margin:4px 0 20px 0;
-    font-family: Roboto;
+    font-family:'Montserrat', sans-serif;
     font-weight:bold;
     text-decoration: underline overline;
     letter-spacing: 2px;
@@ -552,7 +552,7 @@ const AddedPopUp = styled.div`
     border: 2px solid #7b5734;
     border-radius:25px;
     font-size:30px;
-    font-family:Monoton;
+    font-family:'Montserrat', sans-serif;
 
     position: fixed;
     animation:${props=>(props.show ? styles :'')} ;

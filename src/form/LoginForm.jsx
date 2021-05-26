@@ -183,7 +183,7 @@ const Title=styled.text`
     padding:4px;
     //opacity:0.9;
     color: ${props => (props.color ? props.color : '#7b5734')};
-    font-family:Roboto;
+    font-family:'Montserrat', sans-serif;
     font-weight:800;
     font-style:bold;
     letter-spacing:2.4;
@@ -196,7 +196,7 @@ const Error=styled.text`
     padding:4px;
     //opacity:0.9;
     color: ${props => (props.color ? props.color : 'red')};
-    font-family:Roboto;
+    font-family:'Montserrat', sans-serif;
     font-weight:800;
     font-style:bold;
     letter-spacing:2.4;

@@ -12,7 +12,7 @@ class Service{
                 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
                 'Content-Type': 'application/json'
                 },
-            timeout :1000,    
+            // timeout :1000,    
         })
 
         service.interceptors.response.use(this.handleSuccess,this.handleError);

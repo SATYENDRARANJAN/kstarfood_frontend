@@ -2,6 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Switch ,Route} from 'react-router-dom';
 import styled,{keyframes} from 'styled-components'
+import * as Sentry from "@sentry/react";
+import { Integrations } from "@sentry/tracing";
 import Home from './pages/Home.jsx';
 import Address from './pages/Address.jsx';
 import ProductDetail from './pages/ProductDetail.jsx'
@@ -20,14 +22,26 @@ import CartForm from './form/CartForm'
 import CartForm2 from './form/CartForm2'
 import AddressForm from './form/AddressForm'
 import AddedToCartPopup  from './components/AddedToCartPopup.jsx'
+import Footer  from './components/footer.jsx'
 import NavPanel from './components/NavPanel.jsx'
 import React from 'react';
 import shopping from './assets/images/shopping-cart.svg'
 import user from './assets/images/user.svg'
 import "./styles.css";
 import ModalStateUpdaterButton from './components/ModalStateUpdaterButton.jsx'
+import { withRouter } from 'react-router'
 
 
+
+// Sentry.init({
+//   dsn: "https://1087e6b2d1c1415eb945541fec517453@o673428.ingest.sentry.io/5768153",
+//   integrations: [new Integrations.BrowserTracing()],
+
+//   // Set tracesSampleRate to 1.0 to capture 100%
+//   // of transactions for performance monitoring.
+//   // We recommend adjusting this value in production
+//   tracesSampleRate: 0.2,
+// });
 class App extends React.Component{
   static whyDidYouRender = true
 
@@ -75,7 +89,6 @@ class App extends React.Component{
     await this.setState({menuOpen:!this.state.menuOpen});
   }
 
-
   handleWindowSizeChange = () => {
     this.setState({ width: window.innerWidth });
     if (window.innerWidth <500 ){
@@ -98,7 +111,7 @@ class App extends React.Component{
             await this.setState({tags:taglist})
         })
         console.log(this.state.tags)
-    const menu = ['About Us','Our Products','Services','FAQ','Contact Us','About Us','Our Products','Services','FAQ','Contact Us']
+    const menu = ['About Us','Our Products','Services','Terms & Conditions','FAQ','Contact Us']
     await this.setState({tags:[...this.state.tags,...menu]})
     console.log(this.state.tags)
   }
@@ -166,13 +179,14 @@ class App extends React.Component{
   setSelectedTag=async(tag_name)=>{
     localStorage.setItem('tag',tag_name)
     await this.setState({selectedtag:tag_name})
-    await axiosInstance.get("/shop/products/list/" + this.state.selectedtag).
-          then((response)=> 
-              {
-                  console.log(response)
-                  this.setState({itemlist:response.data.products})  
-              }
-          )
+    // await axiosInstance.get("/shop/products/list/" + this.state.selectedtag).
+    //       then(async(response)=> 
+    //           {
+    //               console.log(response)
+    //               await this.setState({itemlist:response.data.products})  
+    //               debugger
+    //           }
+    //       )
   }
 
   setTags =(tags)=>{
@@ -181,7 +195,7 @@ class App extends React.Component{
 
   mobileDisplay =(openCartM)=>{
     return(
-      <Root className="App" id="App">
+      <Root>
 
         <Header>
 
@@ -215,7 +229,7 @@ class App extends React.Component{
 
   LaptopDisplay =(openCartM)=>{
     return(
-    <Root className="App" >
+    <Root >
     {/* <Navbar/> */}
     <Header>
     <AddToCartBtnTop is_logged_in={localStorage.getItem('token')}  openCartM={openCartM}/>
@@ -239,7 +253,8 @@ class App extends React.Component{
         <Route path ="/payment_success"   component={PaymentSuccess}/>
         <Route path ="/address"   component={Address}/>
         {/* <Route path='/' exact component={Home}/> */}
-        <Route path='/' exact render={(props) => ( <Home {...props} isMobile={this.state.isMobile} itemlist={this.state.itemlist} />)}/>
+        {/* <Route path='/' exact render={(props) => ( <Home {...props} isMobile={this.state.isMobile} itemlist={this.state.itemlist} />)}/> */}
+        <Route path='/' exact render={(props) => ( <Home {...props} isMobile={this.state.isMobile} />)}/>
     </Switch>
   </Root>
     )
@@ -247,37 +262,6 @@ class App extends React.Component{
   }
 
   render(){
-    const styles= 
-    {
-      container:{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        zIndex: '99',
-        opacity: 0.9,
-        display:'flex',
-        alignItems:'center',
-        background: 'black',
-        width: '100%',
-        color: 'white',
-        fontFamily:'Lobster',
-      },
-      logo: {
-        margin: '0 auto',
-      },
-      body: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100vw',
-        height: '100vh',
-        filter: this.state.menuOpen ? 'blur(2px)':null,
-        transition: 'filter 0.5s ease',
-      },
-    }
-
-  
-
     const { width,isMobile } = this.state;
     const {loginopen,openM,closeM,jwt,setJwt,cartopen,openCartM,closeCartM,cart2open,openCart2M,closeCart2M,
       resetJwt,addressOpen,openAddress,closeAddress,order_id,selectedtag,setSelectedTag,tags,setTags,logout,
@@ -289,29 +273,28 @@ class App extends React.Component{
           addressOpen:addressOpen,openAddress:openAddress,closeAddress:closeAddress,order_id:order_id,selectedtag:selectedtag,setSelectedTag:setSelectedTag,
           tags:tags,setTags:setTags,logout:logout,isMobile:isMobile,showAddedToCart:showAddedToCart,openAddedToCartPopUp:openAddedToCartPopUp,addedToCart:addedToCart,
           setAddedToCart:setAddedToCart,handleMenuClick:handleMenuClick}}>
-      <Root className="App" >
-      {/* <Header>
+      <Root menuOpen={this.state.menuOpen}>
+        <Root2>
+        {!this.state.isMobile  && <Header>
       <AddToCartBtnTop is_logged_in={localStorage.getItem('token')}  openCartM={openCartM} addedToCart={addedToCart}/>
       <Title width={this.state.width} />
-      </Header> */}
+      </Header> }
       {!this.state.isMobile  &&<MenuBarComponent/>}
-
-       {/* {this.state.menuOpen &&  */}
       
-        <NavPanel tags={this.state.tags} open={this.state.menuOpen}/>
-       {/* } */}
+       {this.state.isMobile  && <NavPanel tags={this.state.tags} open={this.state.menuOpen}/>}
        
-      <MobileHeader>
+       {this.state.isMobile  && <MobileHeader>
         <Heading>
-          CHERIE
+          Chérie
         </Heading>
         <IconsDiv>
-           {!this.state.is_logged_in ?<ModalStateUpdaterButton src={user}/>:null}
-          {!this.state.is_logged_in && <Cart src={shopping} onClick={openCartM}/>}
+           {!this.is_logged_in() ?<ModalStateUpdaterButton src={user}/>:null}
+          {this.is_logged_in() && <Cart src={shopping} onClick={openCartM}/>}
           <MenuButton open={this.state.menuOpen} onClick={()=>this.handleMenuClick()} color='black'/>
 
         </IconsDiv>
       </MobileHeader>
+      }
 
       <Modal open={this.state.loginopen} close={this.closeM}>
           <LoginForm/>
@@ -332,9 +315,13 @@ class App extends React.Component{
           <Route path ="/product/:id"   component={ProductDetail}/>
           <Route path ="/payment_success"   component={PaymentSuccess}/>
           <Route path ="/address"   component={Address}/>
-          <Route path='/' exact render={(props) => ( <Home {...props}  itemlist={this.state.itemlist} />)}/>
+          {/* <Route path='/' exact render={(props) => ( <Home {...props}  itemlist={this.state.itemlist} />)}/> */}
+          <Route path='/' exact render={(props) => ( <Home {...props}  key={this.state.selectedtag}  tag={this.state.selectedtag}/>)}/>
       </Switch>
-    </Root>
+    </Root2>
+    <Footer/>
+
+</Root>
           </MyContext.Provider>
       </BrowserRouter>
       )
@@ -372,6 +359,7 @@ class MenuButton extends React.Component {
         alignItems: 'center',
         cursor: 'pointer',
         marginLeft: '16px',
+        zIndex:1000,
       },
       line: {
         height: '4px',
@@ -421,23 +409,35 @@ const Root=styled.div`
 display:flex;
 flex-direction:column;
 width:auto;
-height:100%;
+height:100vh;
+text-align: center;
+font-family:'Montserrat', sans-serif;
+overflow:${props=>props.menuOpen?`hidden`:''};
+`
+const Root2=styled.div`
+display:flex;
+flex-direction:column;
+width:auto;
 margin: 0 16px;
+text-align: center;
+
 
 `
 const MobileHeader =styled.div`
   display:flex;
   justify-content:space-between;
   margin:0 0px;
-  height:46px;
+  height:59px;
   align-items:center;
 `
 const Heading=styled.text`
-  font-size : 20px;
+  font-size : 59px;
   color:#c0a680;
-  font-family:Roboto;
-  font-weight:900;
-  letter-spacing:1.4px;
+  // font-family:'Montserrat', sans-serif;
+  font-family:'Dancing Script', cursive;
+  font-weight:1000;
+  letter-spacing:2.9px;
+  margin:5px 0;
 
 `
 const IconsDiv  =styled.div`

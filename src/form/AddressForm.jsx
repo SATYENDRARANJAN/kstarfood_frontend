@@ -5,6 +5,7 @@ import MyContext from '../globalStore/MyContext';
 import {axiosInstance} from './../service/axiosservice.jsx'
 import * as Yup from 'yup';
 
+import * as Sentry from "@sentry/react";
 
 class Address extends React.Component{
     constructor(props){
@@ -75,6 +76,18 @@ class Address extends React.Component{
         var options={}
         var redirect_url=null
         const that =this
+        Sentry.configureScope(function(scope) {
+            scope.setTag("Address", "HandleSubmit 1");
+            scope.setUser({
+              id: localStorage.getItem('user_id'),
+            });
+          });
+          Sentry.addBreadcrumb({
+            data:{
+                point:1
+            },
+            level: Sentry.Severity.Info,
+          });
         await axiosInstance.post("/shop/delivery_address/",params).
             then(response=> 
                 {

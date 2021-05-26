@@ -21,6 +21,8 @@ class CartForm2 extends React.Component{
     }
 
     componentDidMount=async()=>{
+        document.getElementById("whatsapp_chat_widget").style.display="none"
+
         await this.setState({qty:localStorage.getItem('qty')})
         await this.setState({product_detail:JSON.parse(localStorage.getItem('product_detail'))})
         let dict ={
@@ -385,7 +387,7 @@ const MobileHeader =styled.div`
 const Heading=styled.text`
   font-size : 20px;
   color:#c0a680;
-  font-family:Roboto;
+  font-family:'Montserrat', sans-serif;
   font-weight:900;
   letter-spacing:1.4px;
 

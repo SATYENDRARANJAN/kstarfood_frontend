@@ -45,7 +45,7 @@ const Root = styled.div`
     background: linear-gradient(to bottom,#fff  0%, #ffe6cc 200%);      /* W3C */
     // opacity:0.9;
     // background-color: rgb(255, 230, 204,0.9);//rgb(160, 87, 52,0.9);
-    z-index:999;
+    z-index:1002;
     left:0;
     right:0;
 `
@@ -54,7 +54,7 @@ const Close=  styled.button`
 position:absolute; 
 right:0;
 margin:20px 20px;
-z-index:999
+z-index:1003
 
 `
 

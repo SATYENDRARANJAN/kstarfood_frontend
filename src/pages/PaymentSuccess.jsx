@@ -9,6 +9,13 @@ class PaymentSuccess extends React.Component{
     componentDidMount=()=>{
         
     }
+
+
+    redirectHome=()=>{
+        this.props.history.replace("/")
+        // window.history.replaceState(null, null, "/");
+
+    }
     render(){
         return(
             <Root>
@@ -54,12 +61,14 @@ class PaymentSuccess extends React.Component{
                     </div>
                     <div style ={{'width':'300px','font-weight':'600','font-size':'13px','lineHeight':'1.1',"fontFamily":"Montserrat, sans-serif"}}>
                     
-                    <br/>
-Thank you for joining the Cherie Family!!
+                    <br/>       
+                    Thank you for joining the Cherie Family!!
                     <br/>
                     Your Cherie  will be delivered very soon . 
                     <br/>
-                    <br/>           
+                    <br/>  
+                    <RedirectBtn onClick={()=>this.redirectHome()}>CONTINUE SHOPPING</RedirectBtn>
+         
                     </div>
                     
                     </WrapperDiv>
@@ -83,7 +92,7 @@ const Success = styled.text`
     display:flex;
     flex-direction:column;
     font-size:18px;
-    font-family:Roboto;
+    font-family:'Montserrat', sans-serif;
     line-height:1.2;
     letter-spacing:1.1px;
     // max-width:500px;;
@@ -172,6 +181,28 @@ const Title=styled.text`
     // letter-spacing:1.2px;
 
 `
+
+const RedirectBtn= styled.div`
+    display:flex;
+    flex-direction:row;
+    width:100%;
+    padding:10px 0px;
+    // margin-left:14px;
+    background-color:#7b5734;
+    border-radius:5px;
+    border:0px ;
+    font-size:16px;
+    font-weight:bold;
+    align-self: center;
+    // margin-top:10px;
+    justify-content:center;
+    font-family:'Montserrat', sans-serif;
+    font-size:20px;
+
+    color:#ffe6cc;
+`
+
+
 
 
 export default PaymentSuccess

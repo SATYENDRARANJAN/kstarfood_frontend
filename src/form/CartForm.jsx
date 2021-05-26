@@ -201,8 +201,8 @@ class CartForm extends React.Component{
                             </MobileHeader>
                             <FirstRow isMobile={isMobile} style={{'display':'flex','flexDirection':'column'}}>
                                 <TotalPriceTitle>
-                                    <div style={{'font-size':'14px' ,'letter-spacing':'1.2px'}}>Total</div> 
-                                    <div style={{'font-size':'14px' ,'letter-spacing':'1.2px'}}>₹{this.getTotal()}</div> 
+                                    <div style={{'fontSize':'14px' ,'letterSpacing':'1.2px'}}>Total</div> 
+                                    <div style={{'fontSize':'14px' ,'letterSpacing':'1.2px'}}>₹{this.getTotal()}</div> 
                                 </TotalPriceTitle>
                                 <TotalPriceTitle>
                                     <div style={{'font-size':'14px' ,'letter-spacing':'1.2px'}}>Tax</div> 
@@ -526,7 +526,7 @@ const MobileHeader =styled.div`
 const Heading=styled.text`
   font-size : 20px;
   color:#c0a680;
-  font-family:Roboto;
+  font-family:'Montserrat', sans-serif;
   font-weight:900;
   letter-spacing:1.4px;
 
