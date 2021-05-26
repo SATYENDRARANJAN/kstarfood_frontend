@@ -5,6 +5,7 @@ import {axiosInstance} from './../service/axiosservice.jsx'
 import placeholder from './../assets/images/placeholder.png'
 // import loader1 from './../assets/images/hearts.svg'
 import loader1 from './../assets/images/loader1.gif'
+import Loader from '../components/Loader'
 import * as config from './../config.json' 
 import Service from '../service/service'
 import MyContext from '../globalStore/MyContext'
@@ -146,7 +147,7 @@ class Home extends React.Component{
         let div=[]
         this.state.itemlist && this.state.itemlist.map((item)=>{div.push(this.getItemViewMobile(item))})
         console.log("InRPL");
-        let loaderdiv = this.state.loader_category ?<ItemImage src={loader1}/>:div
+        let loaderdiv = this.state.loader_category ?<Loader/>:div
         return loaderdiv
     }
 
@@ -285,6 +286,15 @@ const ItemImage = styled.img`
     background-size: contain;
     object-fit:contain;
 `
+
+
+const ItemImage1 = styled.img`
+    height: 80px;
+    width : 80px;
+    background-size: contain;
+    object-fit:contain;
+`
+
 
 const ItemName = styled.h5`
     display:flex;

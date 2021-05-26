@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import loader1 from './../assets/images/loader4.gif'
 
 
-class Loader extends React.Component{
+class Loader2 extends React.Component{
     constructor(props){
         super(props)
         this.state={
@@ -40,4 +40,4 @@ const ItemImage1 = styled.img`
     object-fit:contain;
 `
 
-export default Loader
+export default Loader2

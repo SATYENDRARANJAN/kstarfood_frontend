@@ -6,6 +6,7 @@ import placeholder from './../assets/images/placeholder.png'
 import * as config from './../config.json' 
 import loader2 from './../assets/images/loader2.gif'
 import Service from '../service/service'
+import Loader2 from '../components/Loader2.jsx'
 import MyContext from '../globalStore/MyContext'
 import { withRouter } from 'react-router'
 const images = require.context('./../assets/images', true);
@@ -65,7 +66,7 @@ class ScrollComponent extends React.Component{
         let div=[]
         debugger
         this.state.popular_products && this.state.popular_products.map(product=>(div.push(this.getItemViewMobileSroll(product,isMobile))))
-        return this.state.loader_popular?<ItemImage src={loader2}/>:div
+        return this.state.loader_popular?<Loader2/>:div
 
     }
 
@@ -235,6 +236,12 @@ const IconDiv2=styled.div`
     margin-left:8px;
     margin-right:${props=>props.gap?props.gap:''}
 
+`
+const ItemImage1 = styled.img`
+    height: 80px;
+    width : 80px;
+    background-size: contain;
+    object-fit:contain;
 `
 
 

@@ -47,7 +47,7 @@ class NavPanel extends React.Component{
                 key={index} 
                 id={index}
                 delay={`${index * 0.1}s`}
-                onClick={()=>this.handleLinkClick(val,setSelectedTag,handleMenuClick)}>{val}</MenuItem>)
+                onClick={()=>this.handleLinkClick(val,setSelectedTag,handleMenuClick)}>{val.toUpperCase()}</MenuItem>)
           });
           return menuItems
     }

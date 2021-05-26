@@ -5,6 +5,7 @@ import MyContext from '../globalStore/MyContext';
 import placeholder from '../assets/images/placeholder.png'
 import {axiosInstance} from './../service/axiosservice.jsx'
 import rightarrow from '../assets/images/right-arrow.png'
+import Loader from '../components/Loader.jsx'
 import { withRouter } from 'react-router'
 
 class CartForm extends React.Component{
@@ -18,7 +19,8 @@ class CartForm extends React.Component{
             total:0,
             tax:0,
             show_checkout_sticky:false,
-            cartlist:[]
+            cartlist:[],
+            loader:false
         }
     }
 
@@ -40,12 +42,13 @@ class CartForm extends React.Component{
     componentDidMount = async()=>{
         document.getElementById("whatsapp_chat_widget").style.display="none"
         window.addEventListener('scroll', this.listenScrollEvent,true)
-
+        await this.setState({loader:true})
         const itemsList = await  axiosInstance.get("/shop/get_cart_details/").
-        then(response=> 
+        then(async(response)=> 
             {
                 console.log(response.data)
-                this.setState({cartlist:response.data})
+                await this.setState({cartlist:response.data})
+                await this.setState({loader:false})
 
             }
         )
@@ -167,11 +170,8 @@ class CartForm extends React.Component{
             {
                 console.log(response.data['order_id']);
                 this.setState({'order_id':response.data['order_id']})
-
             }
         )
-
-         
         // closeCartM(s); 
         openAddress(this.state.order_id);
   
@@ -180,11 +180,10 @@ class CartForm extends React.Component{
     getCartItems=(isMobile)=>{
         let div=[]
         this.state.cartlist && this.state.cartlist.map((item)=>{div.push(this.printRows(item,isMobile))})
-        return div
+        return this.state.loader?<Loader/>:div
     }
 
     render(){
-      
         return(
             <MyContext.Consumer>
                 {({jwt,setJwt,closeCartM,openAddress,isMobile})=>(

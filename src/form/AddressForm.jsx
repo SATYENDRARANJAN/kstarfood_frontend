@@ -63,7 +63,7 @@ class Address extends React.Component{
       });
 
     update_order=async(payment_id,rporder_id)=>{
-        alert('thanks')
+        // alert('thanks')
         // update on server and mark status
         let params={
             rporder_id:rporder_id
@@ -95,8 +95,8 @@ class Address extends React.Component{
                 options=response.data
                 console.log(options)
                 options["handler"]= function (response){
-                    alert(response.razorpay_payment_id);
-                    alert(response.razorpay_order_id);
+                    // alert(response.razorpay_payment_id);
+                    // alert(response.razorpay_order_id);
                     that.update_order(response.razorpay_payment_id,response.razorpay_order_id)
                     localStorage.setItem('payment_id',response.razorpay_payment_id)
                     localStorage.setItem('rporder_id',response.razorpay_order_id)
@@ -116,18 +116,18 @@ class Address extends React.Component{
                 
         var rzp1 = new window.Razorpay(options);
                 rzp1.on('payment.failed', function (response){
-                    alert(response.error.code);
-                    alert(response.error.description);
-                    alert(response.error.source);
-                    alert(response.error.step);
-                    alert(response.error.reason);
-                    alert(response.error.metadata.order_id);
-                    alert(response.error.metadata.payment_id);
+                    // alert(response.error.code);
+                    // alert(response.error.description);
+                    // alert(response.error.source);
+                    // alert(response.error.step);
+                    // alert(response.error.reason);
+                    // alert(response.error.metadata.order_id);
+                    // alert(response.error.metadata.payment_id);
                 });
             rzp1.open();
         
             setTimeout(()=>{
-                alert(JSON.stringify(values, null, 2));
+                // alert(JSON.stringify(values, null, 2));
                 setSubmitting(false);
             },400)
     }
