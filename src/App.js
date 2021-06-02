@@ -100,8 +100,8 @@ class App extends React.Component{
 
   }
 
-  searchClose=async()=>{
-    await this.setState({isSearchOpen:false});
+  searchClose=()=>{
+    this.setState({isSearchOpen:false});
   }
 
   setSearchtxt=(searchtxt)=>{
@@ -340,7 +340,7 @@ class App extends React.Component{
           <AddedToCartPopup/>
       </Modal>
       <Modal open={this.state.isSearchOpen} close={this.searchClose} style={{'overflow':'scroll'}}>
-          <SearchModal searchtxt={searchtxt} setSearchtxt={setSearchtxt}/>
+          <SearchModal searchtxt={searchtxt} setSearchtxt={setSearchtxt}  searchClose={this.searchClose} />
       </Modal>
       <Switch>
           <Route path ="/product/:id"   component={ProductDetail}/>

@@ -7,6 +7,7 @@ const MyContext = React.createContext({
     jwt:'',
     setJwt:()=>{},
     openAddress:()=>{},
-    selectedtag:''
+    selectedtag:'',
+    searchClose:()=>{}
 });
 export default MyContext;

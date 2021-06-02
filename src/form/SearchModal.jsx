@@ -4,6 +4,7 @@ import MyContext from '../globalStore/MyContext';
 import SearchBar  from '../components/search/SearchBar.js'
 import {axiosInstance} from './../service/axiosservice.jsx'
 import loader1 from './../assets/images/loader4.gif'
+import { withRouter } from 'react-router'
 
 
 class SearchModal extends React.Component{
@@ -11,11 +12,13 @@ class SearchModal extends React.Component{
         super(props)
         this.state={
             loader:false,
-            itemlist:[]
+            itemlist:[],
+            searchClose:props.searchClose
         }
     }
    
     componentDidMount=async()=>{
+        
         await this.getresults(this.props.searchtxt)
     }
 
@@ -42,12 +45,11 @@ class SearchModal extends React.Component{
         let div=[]
 
         {isMobile ? this.state.itemlist && this.state.itemlist.map((item)=>{div.push(this.printRows(item))}):  this.state.itemlist && 
-            this.state.itemlist.map((item)=>{div.push(this.printRows(item))})}
+            this.state.itemlist.map((item)=>{div.push(this.printRows(item,isMobile))})}
         return div
     }
 
     renderProductList =(isMobile)=>{
-   
         // this.state.itemlist && this.state.itemlist.map((item)=>{div.push(this.getItemViewMobile(item))})
         console.log("InRPL");
         let loaderdiv =  this.state.loader ?this.showLoader(): this.getItems(isMobile)
@@ -55,10 +57,14 @@ class SearchModal extends React.Component{
     }
 
 
+    goToProductDetail=(product_slug)=>{
+        this.state.searchClose()
+        product_slug && this.props.history.push('/product/'+product_slug)
+    }
 
     printRows=(item,isMobile)=>{
         return(
-            <WrapperRow>
+            <WrapperRow key={item.product_slug} onClick={()=>this.goToProductDetail(item.product_slug)}>
                 <Row>
                     <ItemDiv style={{'width':'35%','padding':'4px'}}>
                         <ItemPic src={item.img}></ItemPic>
@@ -97,8 +103,6 @@ class SearchModal extends React.Component{
                 <MyContext.Consumer>
                     {({searchtxt,setSearchtxt,isMobile})=>(
                         <Root>
-                            {                        console.log("sfds :",searchtxt)
-}
                             <Text> Search results:</Text>
                             <SearchBar searchtxt={searchtxt} setSearchtxt={setSearchtxt} clicksearch={(txt)=>this.getresults(txt,setSearchtxt)}/>
                             <Loader>
@@ -432,4 +436,4 @@ const ItemDiv=styled.div`
     display:flex;
     flex-direction:column;
 `
-export default SearchModal
+export default withRouter(SearchModal)
