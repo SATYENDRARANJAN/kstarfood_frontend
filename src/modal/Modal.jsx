@@ -12,7 +12,7 @@ class Modal extends React.Component{
     }
 
     showModal=()=>{
-        return( <Root>
+        return( <Root style={this.props.style}>
                     <Close onClick={()=>{this.props.close()}}>Close</Close>
                     {this.props.children}
                 </Root>

@@ -145,7 +145,10 @@ class Home extends React.Component{
 
     renderProductList =  (isMobile)=>{
         let div=[]
-        this.state.itemlist && this.state.itemlist.map((item)=>{div.push(this.getItemViewMobile(item))})
+
+        {isMobile ? this.state.itemlist && this.state.itemlist.map((item)=>{div.push(this.getItemViewMobile(item))}):  this.state.itemlist && this.state.itemlist.map((item)=>{div.push(this.getItemView(item))})}
+
+        // this.state.itemlist && this.state.itemlist.map((item)=>{div.push(this.getItemViewMobile(item))})
         console.log("InRPL");
         let loaderdiv = this.state.loader_category ?<Loader/>:div
         return loaderdiv

@@ -119,7 +119,6 @@ class CartForm2 extends React.Component{
     getDiscount=()=>{}
     
     getPayableAmount=()=>{
-
         return '₹ '+ (this.getTotal() + this.getTax()) 
     }
 

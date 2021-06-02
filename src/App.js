@@ -22,12 +22,14 @@ import CartForm from './form/CartForm'
 import CartForm2 from './form/CartForm2'
 import AddressForm from './form/AddressForm'
 import AddedToCartPopup  from './components/AddedToCartPopup.jsx'
+import SearchModal  from './form/SearchModal.jsx'
 import Footer  from './components/footer.jsx'
 import NavPanel from './components/NavPanel.jsx'
 import React from 'react';
 import shopping from './assets/images/shopping-cart.svg'
 import user from './assets/images/user.svg'
 import "./styles.css";
+import SearchBar  from './components/search/SearchBar.js'
 import ModalStateUpdaterButton from './components/ModalStateUpdaterButton.jsx'
 import { withRouter } from 'react-router'
 
@@ -79,10 +81,40 @@ class App extends React.Component{
       openAddedToCartPopUp:this.openAddedToCartPopUp,
       addedToCart:false,
       setAddedToCart:this.setAddedToCart,
-      handleMenuClick:this.handleMenuClick
+      handleMenuClick:this.handleMenuClick,
+      searchtxt:'',
+      setSearchtxt:this.setSearchtxt,
+      clicksearch:this.clicksearch,
+      issearchOpen:false,
+      searchOpen:this.searchOpen,
+      searchClose:this.searchClose
+
     }
     const isMobile = window.innerWidth <= 500;
     console.log("isMobile",isMobile)
+  }
+
+
+  searchOpen=async()=>{
+    await this.setState({isSearchOpen:true});
+
+  }
+
+  searchClose=async()=>{
+    await this.setState({isSearchOpen:false});
+  }
+
+  setSearchtxt=(searchtxt)=>{
+    this.setState({searchtxt})
+    // this.searchOpen()
+  }
+
+
+  clicksearch=(searchtxt)=>{
+    debugger
+    this.setState({searchtxt})
+    this.searchOpen()
+    console.log("Hi: ",this.state.searchtxt)
   }
 
   handleMenuClick=async()=> {
@@ -96,7 +128,7 @@ class App extends React.Component{
     }else{
       this.setState({isMobile:false})
     }
-  };
+  }
 
   async componentDidMount(){
     var taglist=[]
@@ -196,9 +228,7 @@ class App extends React.Component{
   mobileDisplay =(openCartM)=>{
     return(
       <Root>
-
         <Header>
-
         <AddToCartBtnTop is_logged_in={localStorage.getItem('token')}  openCartM={openCartM}  isMobile={this.state.isMobile} />
         <Title addedToCart={this.state.addedToCart}/>
         <MenuBarComponent/>
@@ -221,7 +251,6 @@ class App extends React.Component{
           <Route path ="/address"   component={Address}/>
           <Route path='/' exact render={(props) => ( <Home {...props}  itemlist={this.state.itemlist} />)}/>
       </Switch>
-
     </Root>
       )
 
@@ -265,14 +294,14 @@ class App extends React.Component{
     const { width,isMobile } = this.state;
     const {loginopen,openM,closeM,jwt,setJwt,cartopen,openCartM,closeCartM,cart2open,openCart2M,closeCart2M,
       resetJwt,addressOpen,openAddress,closeAddress,order_id,selectedtag,setSelectedTag,tags,setTags,logout,
-      showAddedToCart,openAddedToCartPopUp,addedToCart,setAddedToCart,handleMenuClick}=this.state
+      showAddedToCart,openAddedToCartPopUp,addedToCart,setAddedToCart,handleMenuClick,searchtxt,setSearchtxt,isSearchOpen,searchOpen,searchClose,clicksearch}=this.state
     return (
       <BrowserRouter>
         <MyContext.Provider value={{loginopen:loginopen,openM:openM,closeM:closeM,jwt:jwt,setJwt:setJwt,
           cartopen:cartopen,openCartM:openCartM,closeCartM:closeCartM,cart2open:cart2open,openCart2M:openCart2M,closeCart2M:closeCart2M,resetJwt:resetJwt,
           addressOpen:addressOpen,openAddress:openAddress,closeAddress:closeAddress,order_id:order_id,selectedtag:selectedtag,setSelectedTag:setSelectedTag,
           tags:tags,setTags:setTags,logout:logout,isMobile:isMobile,showAddedToCart:showAddedToCart,openAddedToCartPopUp:openAddedToCartPopUp,addedToCart:addedToCart,
-          setAddedToCart:setAddedToCart,handleMenuClick:handleMenuClick}}>
+          setAddedToCart:setAddedToCart,handleMenuClick:handleMenuClick,searchtxt:searchtxt,setSearchtxt:setSearchtxt,isSearchOpen:isSearchOpen,searchOpen:searchOpen,searchClose:searchClose,clicksearch:clicksearch}}>
       <Root menuOpen={this.state.menuOpen}>
         <Root2>
         {!this.state.isMobile  && <Header>
@@ -282,7 +311,6 @@ class App extends React.Component{
       {!this.state.isMobile  &&<MenuBarComponent/>}
       
        {this.state.isMobile  && <NavPanel tags={this.state.tags} open={this.state.menuOpen}/>}
-       
        {this.state.isMobile  && <MobileHeader>
         <Heading>
           Chérie
@@ -293,8 +321,8 @@ class App extends React.Component{
           <MenuButton open={this.state.menuOpen} onClick={()=>this.handleMenuClick()} color='black'/>
 
         </IconsDiv>
-      </MobileHeader>
-      }
+      </MobileHeader> }
+       {this.state.isMobile  && <SearchBar   searchtxt={searchtxt} setSearchtxt={this.setSearchtxt} clicksearch={this.clicksearch}/>}
 
       <Modal open={this.state.loginopen} close={this.closeM}>
           <LoginForm/>
@@ -310,6 +338,9 @@ class App extends React.Component{
       </Modal>
       <Modal open={this.state.showAddedToCart}>
           <AddedToCartPopup/>
+      </Modal>
+      <Modal open={this.state.isSearchOpen} close={this.searchClose} style={{'overflow':'scroll'}}>
+          <SearchModal searchtxt={searchtxt} setSearchtxt={setSearchtxt}/>
       </Modal>
       <Switch>
           <Route path ="/product/:id"   component={ProductDetail}/>
