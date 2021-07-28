@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React ,{useState,Component}from 'react'
-import banner from './../assets/images/Urbanswaadbanner.png'
+import banner from './../assets/images/cheriebanner.png'
 import {axiosInstance} from './../service/axiosservice.jsx'
 import placeholder from './../assets/images/placeholder.png'
 // import loader1 from './../assets/images/hearts.svg'
@@ -67,7 +67,7 @@ class Home extends React.Component{
 
         // })
         console.log("In CDM :",this.state.tag)
-        await axiosInstance.get("/shop/products/list/" + this.state.tag+'/').
+        await axiosInstance.get("/shop/products/list/" + this.state.tag).
           then(async(response)=> 
               {
                   console.log(response)

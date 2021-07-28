@@ -26,9 +26,9 @@ class PaymentSuccess extends React.Component{
                     Order Completed
                 </Title>
                 <Success> 
-                    {/* Thank you for joining the Urbanswaad Family!!
+                    {/* Thank you for joining the Cherie Family!!
                     <br/>
-                    Your Urbanswaad  will be delivered very soon . 
+                    Your Cherie  will be delivered very soon . 
                     <br/>
                     <br/> */}
                     <WrapperDiv>
@@ -62,9 +62,9 @@ class PaymentSuccess extends React.Component{
                     <div style ={{'width':'300px','font-weight':'600','font-size':'13px','lineHeight':'1.1',"fontFamily":"Montserrat, sans-serif"}}>
                     
                     <br/>       
-                    Thank you for joining the Urbanswaad Family!!
+                    Thank you for joining the Cherie Family!!
                     <br/>
-                    Your Urbanswaad  will be delivered very soon . 
+                    Your Cherie  will be delivered very soon . 
                     <br/>
                     <br/>  
                     <RedirectBtn onClick={()=>this.redirectHome()}>CONTINUE SHOPPING</RedirectBtn>

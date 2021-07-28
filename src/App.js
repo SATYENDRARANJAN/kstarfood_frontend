@@ -133,7 +133,7 @@ class App extends React.Component{
   async componentDidMount(){
     var taglist=[]
     window.addEventListener('resize', this.handleWindowSizeChange);
-    await axiosInstance.get('/shop/get_tags/').
+    await axiosInstance.get('/shop/get_tags').
         then(async response=>{
             console.log(response)
             await localStorage.setItem('tags',response.data)
@@ -313,7 +313,7 @@ class App extends React.Component{
        {this.state.isMobile  && <NavPanel tags={this.state.tags} open={this.state.menuOpen}/>}
        {this.state.isMobile  && <MobileHeader>
         <Heading>
-          Urbanswaad
+          Chérie
         </Heading>
         <IconsDiv>
            {!this.is_logged_in() ?<ModalStateUpdaterButton src={user}/>:null}
@@ -462,10 +462,10 @@ const MobileHeader =styled.div`
   align-items:center;
 `
 const Heading=styled.text`
-  font-size : 39px;
+  font-size : 59px;
   color:#c0a680;
-  font-family:'Montserrat', sans-serif;
-  // font-family:'Dancing Script', cursive;
+  // font-family:'Montserrat', sans-serif;
+  font-family:'Dancing Script', cursive;
   font-weight:1000;
   letter-spacing:2.9px;
   margin:5px 0;

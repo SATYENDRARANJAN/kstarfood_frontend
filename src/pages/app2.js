@@ -142,7 +142,7 @@ class App extends React.Component{
   setSelectedTag=async(tag_name)=>{
     localStorage.setItem('tag',tag_name)
     await this.setState({selectedtag:tag_name})
-    await axiosInstance.get("/shop/products/list/" + this.state.selectedtag+'/').
+    await axiosInstance.get("/shop/products/list/" + this.state.selectedtag).
           then((response)=> 
               {
                   console.log(response)

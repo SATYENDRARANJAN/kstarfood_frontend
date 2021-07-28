@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React ,{useState,Component}from 'react'
-import banner from './../assets/images/Urbanswaadbanner.png'
+import banner from './../assets/images/cheriebanner.png'
 import {axiosInstance} from './../service/axiosservice.jsx'
 import placeholder from './../assets/images/placeholder.png'
 import * as config from './../config.json' 
@@ -27,7 +27,7 @@ class ScrollComponent extends React.Component{
     componentDidMount=async()=>{
         await this.setState({loader_popular:true})
 
-        await axiosInstance.get('/shop/products_popular/').
+        await axiosInstance.get('/shop/products_popular').
         then(async response=>{
             console.log(response)
             await this.setState({loader_popular:false})
@@ -37,7 +37,7 @@ class ScrollComponent extends React.Component{
     }
 
     goToProductDetail=(product_slug)=>{
-        this.props.history.push('/product/'+product_slug+'/')
+        this.props.history.push('/product/'+product_slug)
     }
 
     getItemViewMobileSroll=(item)=>{

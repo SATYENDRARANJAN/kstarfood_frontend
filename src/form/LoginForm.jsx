@@ -129,7 +129,7 @@ class LoginForm extends React.Component{
                     <Root>
                         {console.log("printing jwt: " + jwt +" "+setJwt)}
 
-                        <Title style={{'text-decoration':'underline overline','text-underline-offset':'6px','letter-spacing':'2.4px','align-self':'center'}}>Welcome to Urbanswaad!</Title>
+                        <Title style={{'text-decoration':'underline overline','text-underline-offset':'6px','letter-spacing':'2.4px','align-self':'center'}}>Welcome to Cherie!</Title>
                         <Title style={{'font-size':'20px','align-self':'center'}}>{this.getTitle()}</Title>
 
                         <Phone type="char" value={this.state.phone} name='phone' placeholder='Enter Phone no.' onChange={this.handlePhoneChange}></Phone>
