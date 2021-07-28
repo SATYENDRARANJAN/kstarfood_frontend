@@ -127,7 +127,7 @@ class ProductDetail extends React.Component{
     getLaptopDisplay = (openM,openCart2M,order_id,props,ShareList,isMobile,addedToCart,setAddedToCart)=>{
         const {
             url = String(window.location),
-            title = "Cherie Chocolates ~ If chocolates make you happy , I can make you happier!  ",
+            title = "Urbanswaad Chocolates ~ If chocolates make you happy , I can make you happier!  ",
             size = "2.5rem",
           } = props;
         return(
@@ -164,7 +164,7 @@ class ProductDetail extends React.Component{
             <ShareList>
         <FacebookShareButton
             quote={title}
-            url = 'http://hicherie.in.s3-website.ap-south-1.amazonaws.com/'
+            url = 'http://hiUrbanswaad.in.s3-website.ap-south-1.amazonaws.com/'
         >
             <FacebookIcon
             size={size}
@@ -205,7 +205,7 @@ class ProductDetail extends React.Component{
     getMobileDisplay =(openM,openCart2M,order_id,props,ShareList,isMobile,addedToCart,setAddedToCart)=>{
         const {
             url = String(window.location),
-            title = "Cherie Chocolates ~ If chocolates make you happy , I can make you happier!  ",
+            title = "Urbanswaad Chocolates ~ If chocolates make you happy , I can make you happier!  ",
             shareImage = "https://www.steadylearner.com/static/images/brand/prop-passer.png",
             size = "2.5rem",
           } = props;
@@ -235,7 +235,7 @@ class ProductDetail extends React.Component{
                 <ShareList>
                 <FacebookShareButton
                     quote={title}
-                    url = 'http://hicherie.in.s3-website.ap-south-1.amazonaws.com/'
+                    url = 'http://hiUrbanswaad.in.s3-website.ap-south-1.amazonaws.com/'
                 >
                     <FacebookIcon
                     size={size}
@@ -277,7 +277,7 @@ class ProductDetail extends React.Component{
     render(){
         const {
             url = String(window.location),
-            title = "Cherie Chocolates ~ If chocolates make you happy , I can make you happier!  ",
+            title = "Urbanswaad Chocolates ~ If chocolates make you happy , I can make you happier!  ",
             shareImage = "https://www.steadylearner.com/static/images/brand/prop-passer.png",
             size = "2.5rem",
           } = this.props;

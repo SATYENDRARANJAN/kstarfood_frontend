@@ -11,7 +11,7 @@ import { keyframes ,css} from 'styled-components'
 export  const Title = (props)=>{
     return (
         <TitleDiv width={props.width} color={props.color}>
-            CHERIE CHOCOLATES
+            Urbanswaad CHOCOLATES
         </TitleDiv>
     )
 }   

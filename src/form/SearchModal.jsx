@@ -29,7 +29,7 @@ class SearchModal extends React.Component{
 
         if (setSearchtxt){setSearchtxt(txt)}
     
-        await axiosInstance.get('/shop/search/?key='+txt)
+        await axiosInstance.get('/shop/search/?key='+txt+'/')
           .then(async(response)=> 
               {
                   console.log(response)

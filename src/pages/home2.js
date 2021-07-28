@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React ,{useState,Component}from 'react'
-import banner from './../assets/images/cheriebanner.png'
+import banner from './../assets/images/Urbanswaadbanner.png'
 import {axiosInstance} from './../service/axiosservice.jsx'
 import placeholder from './../assets/images/placeholder.png'
 import * as config from './../config.json' 

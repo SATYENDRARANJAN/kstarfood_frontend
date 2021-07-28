@@ -65,7 +65,7 @@ class NavPanel extends React.Component{
                     {this.state.open ?
                     <NavPanelDiv slideIn={this.state.open}>
                       <MenuItem>
-                        CHERIE
+                        Urbanswaad
                       </MenuItem>         
                       {this.getMenuItems(setSelectedTag,handleMenuClick)}
                     </NavPanelDiv>:null

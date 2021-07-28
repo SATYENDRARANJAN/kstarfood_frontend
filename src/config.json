@@ -1,4 +1,4 @@
 {
-    "BASE_URL":"http://localhost:8000",
+    "BASE_URL":"https://prod.hiUrbanswaad.com/",
     "env":"development"
 }

@@ -30,7 +30,7 @@ class Footer extends React.Component{
         return(
             <Root>
                 <Text1 style={{'margin':'12px 0px 8px 0px','padding':"8px",'line-height':'1.3'}}>
-                Cherie is brand owned & managed by "KSTAR Foods" and all many of its products are aggregated from different Vendors. The products that belong to Cherie are freshly produced and ready to market .Cherie acts as retailer for other outsourced products and their date of expiry and quality would be entitled to their real producer.
+                Urbanswaad is brand owned & managed by "Urbanswaad Foods" and all many of its products are aggregated from different Vendors. The products that belong to Urbanswaad are freshly produced and ready to market .Urbanswaad acts as retailer for other outsourced products and their date of expiry and quality would be entitled to their real producer.
                 </Text1>
 
                 <FeaturesDiv>
